@@ -1,0 +1,3 @@
+*.vs
+Source/GiddyUpCaravan/.vs/*
+Source/GiddyUpCaravan/obj/*

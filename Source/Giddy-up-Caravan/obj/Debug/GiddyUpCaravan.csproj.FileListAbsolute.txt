@@ -1,0 +1,4 @@
+C:\Program Files (x86)\Steam\SteamApps\common\RimWorld\Mods\Giddy-up-Caravan\Source\Giddy-up-Caravan\obj\Debug\GiddyUpCaravan.csprojResolveAssemblyReference.cache
+C:\Program Files (x86)\Steam\SteamApps\common\RimWorld\Mods\Giddy-up-Caravan\Source\Giddy-up-Caravan\obj\Debug\GiddyUpCaravan.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\SteamApps\common\RimWorld\Mods\Giddy-up-Caravan\Assemblies\GiddyUpCaravan.dll
+C:\Program Files (x86)\Steam\SteamApps\common\RimWorld\Mods\Giddy-up-Caravan\Source\Giddy-up-Caravan\obj\Debug\GiddyUpCaravan.dll

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+ <!-- note for translaters: The following five items need to be really short to fit -->
+ <GU_Car_No_Rider>No rider</GU_Car_No_Rider>
+ <GU_Car_Set_Rider>Set rider</GU_Car_Set_Rider>
+ <GU_Car_NotInModOptions>Mount forbidden</GU_Car_NotInModOptions>
+ <GU_Car_NotFullyGrown>Not fully grown</GU_Car_NotFullyGrown>
+ <GU_Car_NeedsObedience>Needs obedience</GU_Car_NeedsObedience>
+</LanguageData>

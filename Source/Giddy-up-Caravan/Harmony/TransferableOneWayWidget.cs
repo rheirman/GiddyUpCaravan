@@ -5,6 +5,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using UnityEngine;
@@ -17,7 +18,6 @@ namespace GiddyUpCaravan.Harmony
     {
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            Log.Message(typeof(TooltipHandler).GetMethod("TipRegion", new Type[] { typeof(Rect), typeof(TipSignal) }).ToString());
             var instructionsList = new List<CodeInstruction>(instructions);
             bool flag = false;
             for (var i = 0; i < instructionsList.Count; i++)
@@ -37,28 +37,64 @@ namespace GiddyUpCaravan.Harmony
                     yield return new CodeInstruction(OpCodes.Ldarg_2);//Load trad
                     yield return new CodeInstruction(OpCodes.Call, typeof(TransferableOneWayWidget_DoRow).GetMethod("addMountSelector"));//Injected code     
                     yield return new CodeInstruction(OpCodes.Stloc_0);//store count local variable
-
+                    flag = false;
                 }
             }
         }
+
         public static float addMountSelector(TransferableOneWayWidget widget, float num, Rect rect, TransferableOneWay trad)
         {
+
             float buttonWidth = 150f;
-            Pawn animal = trad.AnyThing as Pawn;
-            if (animal == null || !animal.RaceProps.Animal)
+            Rect buttonRect = new Rect(num - buttonWidth, 0f, buttonWidth, rect.height);
+
+            Pawn pawn = trad.AnyThing as Pawn;
+            if (pawn == null)
             {
                 return num; //not an animal, return; 
             }
+            setSelectedForCaravan(pawn, trad);
+            if (pawn.RaceProps.Animal)
+            {
+                handleAnimal(num, buttonRect, pawn);
+            }
 
+            else
+            {
+                return num;
+            }
+           
+
+            return num - buttonWidth;
+        }
+
+        private static void setSelectedForCaravan(Pawn pawn, TransferableOneWay trad)
+        {
+
+            ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
+
+            if (trad.CountToTransfer == 0)
+            {
+                pawnData.selectedForCaravan = false;
+            }
+            else
+            {
+                pawnData.selectedForCaravan = true;
+            }
+        }
+
+        private static void handleAnimal(float num, Rect buttonRect, Pawn animal)
+        {
             ExtendedPawnData animalData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animal);
-            Rect buttonRect = new Rect(num-buttonWidth, 0f, buttonWidth, rect.height);
             Text.Anchor = TextAnchor.MiddleLeft;
 
             List<FloatMenuOption> list = new List<FloatMenuOption>();
             List<Pawn> pawns = Dialog_FormCaravan.AllSendablePawns(Find.VisibleMap, false);
+
             string buttonText = "GU_Car_Set_Rider".Translate();
 
             bool canMount = true;
+
             if (animal.ageTracker.CurLifeStageIndex != animal.RaceProps.lifeStageAges.Count - 1)
             {
                 //opts.Add(new FloatMenuOption("BM_NotFullyGrown".Translate(), null, MenuOptionPriority.Low));
@@ -77,9 +113,18 @@ namespace GiddyUpCaravan.Harmony
                 buttonText = "GU_Car_NotInModOptions".Translate();
                 canMount = false;
             }
+            if (!animalData.selectedForCaravan)
+            {
+                buttonText = "GU_Car_AnimalNotSelected".Translate();
+                canMount = false;
+            }
             if (animalData.caravanRider != null)
             {
-                buttonText = animalData.caravanRider.Name.ToStringShort;
+                ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
+                if (riderData.selectedForCaravan)
+                {
+                    buttonText = animalData.caravanRider.Name.ToStringShort;
+                }
             }
             if (!canMount)
             {
@@ -92,7 +137,13 @@ namespace GiddyUpCaravan.Harmony
                     if (pawn.RaceProps.Humanlike)
                     {
                         ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
-                        if(pawnData.caravanMount != null)
+                        if (!pawnData.selectedForCaravan)
+                        {
+                            list.Add(new FloatMenuOption(pawn.Name.ToStringShort + " (" + "GU_Car_PawnNotSelected".Translate() + ")", null ,MenuOptionPriority.Default, null, null, 0f, null, null));
+                            continue;
+                        }
+
+                        if (pawnData.caravanMount != null)
                         {
                             continue;
                         }
@@ -100,7 +151,7 @@ namespace GiddyUpCaravan.Harmony
                         {
                             {
 
-                                if(animalData.caravanRider != null)
+                                if (animalData.caravanRider != null)
                                 {
                                     ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
                                     riderData.caravanMount = null;
@@ -109,7 +160,7 @@ namespace GiddyUpCaravan.Harmony
                                 pawnData.caravanMount = animal;
                                 animalData.caravanRider = pawn;
                             }
-                        }, MenuOptionPriority.Default, null, null, 0f, null, null));
+                        }, MenuOptionPriority.High, null, null, 0f, null, null));
 
                     }
                 }
@@ -123,12 +174,12 @@ namespace GiddyUpCaravan.Harmony
                         }
                         animalData.caravanRider = null;
                     }
-                }, MenuOptionPriority.Default, null, null, 0f, null, null));
+                }, MenuOptionPriority.Low, null, null, 0f, null, null));
                 Find.WindowStack.Add(new FloatMenu(list));
             }
-
-            return num - buttonWidth;
         }
+
+
     }
 
     [HarmonyPatch(typeof(TransferableOneWayWidget), "DrawMass")]

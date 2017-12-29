@@ -3,6 +3,7 @@ using GiddyUpCore.Storage;
 using Harmony;
 using RimWorld;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -45,20 +46,47 @@ namespace GiddyUpCaravan.Harmony
         public static float addMountSelector(TransferableOneWayWidget widget, float num, Rect rect, TransferableOneWay trad)
         {
 
+
             float buttonWidth = 150f;
-            Rect buttonRect = new Rect(num - buttonWidth, 0f, buttonWidth, rect.height);
+
 
             Pawn pawn = trad.AnyThing as Pawn;
             if (pawn == null)
             {
                 return num; //not an animal, return; 
             }
-            setSelectedForCaravan(pawn, trad);
-            if (pawn.RaceProps.Animal)
-            {
-                handleAnimal(num, buttonRect, pawn);
-            }
 
+            Rect buttonRect = new Rect(num - buttonWidth, 0f, buttonWidth, rect.height);
+
+
+            //Reflection is needed here to access the private struct inside TransferableOneWayWidget
+            Type sectionType = Traverse.Create(widget).Type("Section").GetValue<Type>();
+            IList sections = Traverse.Create(widget).Field("sections").GetValue<IList>();
+
+            object section = sections[0]; //section 0 only yields pawns, which are needed in this case
+
+            List<TransferableOneWay> cachedTransferables = sectionType.GetField("cachedTransferables").GetValue(section) as List<TransferableOneWay>;
+
+            List<Pawn> pawns = new List<Pawn>();
+            if (cachedTransferables != null)
+            {
+                foreach(TransferableOneWay tow in cachedTransferables)
+                {
+                    //Log.Message(tow.AnyThing.Label);
+                    Pawn towPawn = tow.AnyThing as Pawn;
+                    if(towPawn != null)
+                    {
+                        pawns.Add(tow.AnyThing as Pawn);
+                    }
+                }
+                //pawns = TransferableUtility.GetPawnsFromTransferables(cachedTransferables);
+                //It quacks like a duck, so it is one!
+            }
+            setSelectedForCaravan(pawn, trad);
+            if (pawn.RaceProps.Animal && pawns.Count > 0)
+            {
+                handleAnimal(num, buttonRect, pawn, pawns);
+            }
             else
             {
                 return num;
@@ -76,6 +104,12 @@ namespace GiddyUpCaravan.Harmony
             if (trad.CountToTransfer == 0)
             {
                 pawnData.selectedForCaravan = false;
+                if (pawnData.caravanMount != null)
+                {
+                    ExtendedPawnData mountData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawnData.caravanMount);
+                    mountData.caravanRider = null;
+                    pawnData.caravanMount = null;
+                }
             }
             else
             {
@@ -83,18 +117,22 @@ namespace GiddyUpCaravan.Harmony
             }
         }
 
-        private static void handleAnimal(float num, Rect buttonRect, Pawn animal)
+        private static void handleAnimal(float num, Rect buttonRect, Pawn animal, List<Pawn> pawns)
         {
             ExtendedPawnData animalData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animal);
             Text.Anchor = TextAnchor.MiddleLeft;
 
             List<FloatMenuOption> list = new List<FloatMenuOption>();
-            List<Pawn> pawns = Dialog_FormCaravan.AllSendablePawns(Find.VisibleMap, false);
 
             string buttonText = "GU_Car_Set_Rider".Translate();
 
             bool canMount = true;
 
+            if (!animalData.selectedForCaravan)
+            {
+                buttonText = "GU_Car_AnimalNotSelected".Translate();
+                canMount = false;
+            }
             if (animal.ageTracker.CurLifeStageIndex != animal.RaceProps.lifeStageAges.Count - 1)
             {
                 //opts.Add(new FloatMenuOption("BM_NotFullyGrown".Translate(), null, MenuOptionPriority.Low));
@@ -113,11 +151,7 @@ namespace GiddyUpCaravan.Harmony
                 buttonText = "GU_Car_NotInModOptions".Translate();
                 canMount = false;
             }
-            if (!animalData.selectedForCaravan)
-            {
-                buttonText = "GU_Car_AnimalNotSelected".Translate();
-                canMount = false;
-            }
+
             if (animalData.caravanRider != null)
             {
                 ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
@@ -134,11 +168,12 @@ namespace GiddyUpCaravan.Harmony
             {
                 foreach (Pawn pawn in pawns)
                 {
-                    if (pawn.RaceProps.Humanlike)
+                    if (pawn.IsColonist)
                     {
                         ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
                         if (!pawnData.selectedForCaravan)
                         {
+                            Log.Message("pawnData.caravanMount is not selected for caravan, continue" + pawn.Label);
                             list.Add(new FloatMenuOption(pawn.Name.ToStringShort + " (" + "GU_Car_PawnNotSelected".Translate() + ")", null ,MenuOptionPriority.Default, null, null, 0f, null, null));
                             continue;
                         }
@@ -161,7 +196,6 @@ namespace GiddyUpCaravan.Harmony
                                 animalData.caravanRider = pawn;
                             }
                         }, MenuOptionPriority.High, null, null, 0f, null, null));
-
                     }
                 }
                 list.Add(new FloatMenuOption("GU_Car_No_Rider".Translate(), delegate
@@ -206,7 +240,6 @@ namespace GiddyUpCaravan.Harmony
                 float invMass = (!InventoryCalculatorsUtility.ShouldIgnoreInventoryOf(pawn, ignore)) ? MassUtility.InventoryMass(pawn) : 0f;
                 float num = cap - gearMass - invMass;
                 num -= pawnData.caravanRider.GetStatValue(StatDefOf.Mass);
-                Log.Message("mass: " + num);
                 if(num < 0)
                 {
                     num = 0;

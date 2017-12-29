@@ -18,7 +18,6 @@ namespace GiddyUpCaravan.Harmony
         {
             foreach (Pawn pawn in __instance.lord.ownedPawns)
             {
-                Log.Message("UpdateAllDuties called");
                 ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
                 if(pawnData.caravanMount != null && __instance.lord.ownedPawns.Contains(pawnData.caravanMount))
                 {

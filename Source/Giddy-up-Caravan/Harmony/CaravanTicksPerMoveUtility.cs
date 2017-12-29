@@ -38,16 +38,14 @@ namespace GiddyUpCaravan.Harmony
             
             if(pawnsWithoutMount == 0)
             {
-                Log.Message("no pawns without mount, speed bonus applied");
+                //Log.Message("no pawns without mount, speed bonus applied");
                 __result = Mathf.RoundToInt(__result / ((100f + Base.completeCaravanBonus.Value) / 100));
             }
             else
             {
-                Log.Message("pawnsWithoutMount: " + pawnsWithoutMount);
+                //Log.Message("pawnsWithoutMount: " + pawnsWithoutMount);
                 float isMountedFraction =  (float) pawnsWithMount / (pawnsWithMount + pawnsWithoutMount - 1);
-                Log.Message("result before: " + __result);
                 __result = Mathf.RoundToInt(__result / ((100f + isMountedFraction * Base.incompleteCaravanBonusCap.Value) / 100f));
-                Log.Message("result after: " + __result);
 
             }
 

@@ -21,11 +21,8 @@ namespace GiddyUpCaravan.Harmony
             }
             else
             {
-                Log.Message("caravanRider not null, change result, before: " + __result);
                 __result -= pawnData.caravanRider.GetStatValue(StatDefOf.Mass);
                 __result = Math.Max(__result, 0f);
-                Log.Message("caravanRider not null, change result, after: " + __result);
-
             }
         }
     }

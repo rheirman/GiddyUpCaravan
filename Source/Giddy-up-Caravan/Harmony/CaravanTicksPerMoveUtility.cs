@@ -25,7 +25,6 @@ namespace GiddyUpCaravan.Harmony
           
             foreach(Pawn pawn in pawns)
             {
-                Log.Message("checking: " + pawn.Label);
                 ExtendedPawnData pawndata = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
                 if(pawn.IsColonist && pawn.ridingCaravanMount())
                 {
@@ -37,19 +36,18 @@ namespace GiddyUpCaravan.Harmony
                 }
             }
             
-            if(pawnsWithoutMount == 0)
+            if(pawnsWithoutMount == 0) //no pawns without mount, apply full speed bonus
             {
-                Log.Message("no pawns without mount, speed bonus applied");
                 __result = Mathf.RoundToInt(__result / ((100f + Base.completeCaravanBonus.Value) / 100));
             }
-            else
+            else //otherwise apply small per mount bonus
             {
-                Log.Message("pawnsWithoutMount: " + pawnsWithoutMount);
+                //Log.Message("pawnsWithoutMount: " + pawnsWithoutMount);
 
                 int total = pawnsWithMount + pawnsWithoutMount;
                 int adjustedTotal = total > 1 ? total- 1 : 1; //adjusted total makes sure incompleteCaravanBonusCap is achievable and prevents div/0. 
                 float isMountedFraction =  (float) pawnsWithMount / adjustedTotal;
-                Log.Message("isMountedFraction: " + isMountedFraction);
+                //Log.Message("isMountedFraction: " + isMountedFraction);
                 __result = Mathf.RoundToInt(__result / ((100f + isMountedFraction * Base.incompleteCaravanBonusCap.Value) / 100f));
 
             }

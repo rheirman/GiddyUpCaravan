@@ -214,42 +214,6 @@ namespace GiddyUpCaravan.Harmony
 
     }
 
-    //[HarmonyPatch(new Type[] { typeof(Thing)})]
-    [HarmonyPatch(typeof(TransferableOneWayWidget), "GetMass")]
-    static class TransferableOneWayWidget_GetMass
-    {
-        static void Postfix(ref Thing thing)
-        {
-            Log.Message("getting mass for thing: " + thing.Label);
-            /*
-            Log.Message("called GetMass, __result before: " + __result);
-            Pawn pawn = thing as Pawn;
-            if (pawn == null)
-            {
-                Log.Message("pawn is null, return");
-                return;
-            }
-            ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
-            if (pawnData.caravanRider == null)
-            {
-                Log.Message("caravanRider is null, return");
-                return;
-            }
-            else
-            {
-
-                __result -= pawnData.caravanRider.GetStatValue(StatDefOf.Mass);
-                if(__result < 0)
-                {
-                    __result = 0;
-                }
-                Log.Message("changed result, is now: " + __result);
-
-            }
-            */
-        }
-
-    }
     [HarmonyPatch(typeof(TransferableOneWayWidget), "FillMainRect")]
     static class TransferableOneWayWidget_FillMainRect
     {

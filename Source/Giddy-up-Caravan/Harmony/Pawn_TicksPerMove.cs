@@ -25,7 +25,7 @@ namespace GiddyUpCaravan.Harmony
             }
 
             ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(__instance);
-            if (pawnData.caravanMount != null && __instance.ridingCaravanMount())
+            if (pawnData.caravanMount != null && __instance.ridingCaravanMount() && !__instance.Spawned)
             {
                 __result = TicksPerMoveUtility.adjustedTicksPerMove(__instance, pawnData.caravanMount, diagonal);
             }

@@ -1,5 +1,6 @@
 ﻿using GiddyUpCaravan.Utilities;
 using GiddyUpCore.Storage;
+using GiddyUpCore.Utilities;
 using Harmony;
 using RimWorld;
 using RimWorld.Planet;
@@ -17,7 +18,6 @@ namespace GiddyUpCaravan.Harmony
     [HarmonyPatch(typeof(CaravanTicksPerMoveUtility), "GetTicksPerMove")]
     class CaravanTicksPerMoveUtility_GetTicksPerMove
     {
-
         static void Postfix(List<Pawn> pawns, ref int __result)
         {
             int pawnsWithMount = 0;
@@ -25,12 +25,13 @@ namespace GiddyUpCaravan.Harmony
           
             foreach(Pawn pawn in pawns)
             {
+                Log.Message("checking: " + pawn.Label);
                 ExtendedPawnData pawndata = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
                 if(pawn.IsColonist && pawn.ridingCaravanMount())
                 {
                     pawnsWithMount++;
                 }
-                else if (pawn.IsColonist && !pawn.ridingCaravanMount())
+                else if (pawn.IsColonist)
                 {
                     pawnsWithoutMount++;
                 }
@@ -38,21 +39,24 @@ namespace GiddyUpCaravan.Harmony
             
             if(pawnsWithoutMount == 0)
             {
-                //Log.Message("no pawns without mount, speed bonus applied");
+                Log.Message("no pawns without mount, speed bonus applied");
                 __result = Mathf.RoundToInt(__result / ((100f + Base.completeCaravanBonus.Value) / 100));
             }
             else
             {
-                //Log.Message("pawnsWithoutMount: " + pawnsWithoutMount);
-                float isMountedFraction =  (float) pawnsWithMount / (pawnsWithMount + pawnsWithoutMount - 1);
+                Log.Message("pawnsWithoutMount: " + pawnsWithoutMount);
+
+                int total = pawnsWithMount + pawnsWithoutMount;
+                int adjustedTotal = total > 1 ? total- 1 : 1; //adjusted total makes sure incompleteCaravanBonusCap is achievable and prevents div/0. 
+                float isMountedFraction =  (float) pawnsWithMount / adjustedTotal;
+                Log.Message("isMountedFraction: " + isMountedFraction);
                 __result = Mathf.RoundToInt(__result / ((100f + isMountedFraction * Base.incompleteCaravanBonusCap.Value) / 100f));
 
             }
-
+            
 
         }
 
-        /*
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var instructionsList = new List<CodeInstruction>(instructions);
@@ -68,15 +72,26 @@ namespace GiddyUpCaravan.Harmony
                 if(flag && instructionsList[i].opcode == OpCodes.Stloc_2)
                 {
                     yield return new CodeInstruction(OpCodes.Ldloc_2);//load num2 local variable
+                    yield return new CodeInstruction(OpCodes.Ldloc_1);//load i local variable
+                    yield return new CodeInstruction(OpCodes.Ldarg_0);//load Pawns argument
                     yield return new CodeInstruction(OpCodes.Call, typeof(CaravanTicksPerMoveUtility_GetTicksPerMove).GetMethod("adjustTicksPerMove"));//Injected code     
                     yield return new CodeInstruction(OpCodes.Stloc_2);//load num2 local variable
                 }
             }
         }
-        */
-        //public int adjustTicksPerMove(Pawn pawn)
-        //{
-        //    return ticks;
-        //}
+
+        public static int adjustTicksPerMove(int num2, int index, List<Pawn> pawns)
+        {
+            Pawn pawn = pawns[index];
+            ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
+            if (pawnData.caravanMount != null && pawn.ridingCaravanMount())
+            {
+                return TicksPerMoveUtility.adjustedTicksPerMove(pawn, pawnData.caravanMount, true);
+            }
+            else
+            {
+                return num2;
+            }
+        }
     }
 }

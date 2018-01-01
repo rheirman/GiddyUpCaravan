@@ -70,11 +70,11 @@ namespace GiddyUpCaravan.Harmony
             List<Pawn> pawns = new List<Pawn>();
             if (cachedTransferables != null)
             {
-                foreach(TransferableOneWay tow in cachedTransferables)
+                foreach (TransferableOneWay tow in cachedTransferables)
                 {
                     //Log.Message(tow.AnyThing.Label);
                     Pawn towPawn = tow.AnyThing as Pawn;
-                    if(towPawn != null)
+                    if (towPawn != null)
                     {
                         pawns.Add(tow.AnyThing as Pawn);
                     }
@@ -91,7 +91,7 @@ namespace GiddyUpCaravan.Harmony
             {
                 return num;
             }
-           
+
 
             return num - buttonWidth;
         }
@@ -135,13 +135,11 @@ namespace GiddyUpCaravan.Harmony
             }
             if (animal.ageTracker.CurLifeStageIndex != animal.RaceProps.lifeStageAges.Count - 1)
             {
-                //opts.Add(new FloatMenuOption("BM_NotFullyGrown".Translate(), null, MenuOptionPriority.Low));
                 buttonText = "GU_Car_NotFullyGrown".Translate();
                 canMount = false;
             }
             if (!(animal.training != null && animal.training.IsCompleted(TrainableDefOf.Obedience)))
             {
-                //opts.Add(new FloatMenuOption("BM_NeedsObedience".Translate(), null, MenuOptionPriority.Low));
                 buttonText = "GU_Car_NeedsObedience".Translate();
                 canMount = false;
             }
@@ -173,8 +171,8 @@ namespace GiddyUpCaravan.Harmony
                         ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
                         if (!pawnData.selectedForCaravan)
                         {
-                            Log.Message("pawnData.caravanMount is not selected for caravan, continue" + pawn.Label);
-                            list.Add(new FloatMenuOption(pawn.Name.ToStringShort + " (" + "GU_Car_PawnNotSelected".Translate() + ")", null ,MenuOptionPriority.Default, null, null, 0f, null, null));
+                            //Log.Message("pawnData.caravanMount is not selected for caravan, continue" + pawn.Label);
+                            list.Add(new FloatMenuOption(pawn.Name.ToStringShort + " (" + "GU_Car_PawnNotSelected".Translate() + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null));
                             continue;
                         }
 
@@ -216,57 +214,48 @@ namespace GiddyUpCaravan.Harmony
 
     }
 
-    [HarmonyPatch(typeof(TransferableOneWayWidget), "DrawMass")]
-    [HarmonyPatch(new Type[] { typeof(Rect), typeof(TransferableOneWay), typeof(float) })]
-    static class TransferableOneWayWidget_DrawMass
+    //[HarmonyPatch(new Type[] { typeof(Thing)})]
+    [HarmonyPatch(typeof(TransferableOneWayWidget), "GetMass")]
+    static class TransferableOneWayWidget_GetMass
     {
-        static bool Prefix(TransferableOneWayWidget __instance, Rect rect, TransferableOneWay trad)
+        static void Postfix(ref Thing thing)
         {
-            Pawn pawn = trad.AnyThing as Pawn;
+            Log.Message("getting mass for thing: " + thing.Label);
+            /*
+            Log.Message("called GetMass, __result before: " + __result);
+            Pawn pawn = thing as Pawn;
             if (pawn == null)
             {
-                return true;
+                Log.Message("pawn is null, return");
+                return;
             }
             ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
             if (pawnData.caravanRider == null)
             {
-                return true;
+                Log.Message("caravanRider is null, return");
+                return;
             }
             else
             {
-                float cap = MassUtility.Capacity(pawn);
-                float gearMass = MassUtility.GearMass(pawn);
-                IgnorePawnsInventoryMode ignore = Traverse.Create(__instance).Field("ignorePawnInventoryMass").GetValue<IgnorePawnsInventoryMode>();
-                float invMass = (!InventoryCalculatorsUtility.ShouldIgnoreInventoryOf(pawn, ignore)) ? MassUtility.InventoryMass(pawn) : 0f;
-                float num = cap - gearMass - invMass;
-                num -= pawnData.caravanRider.GetStatValue(StatDefOf.Mass);
-                if(num < 0)
-                {
-                    num = 0;
-                }
 
-                Color oldColor = GUI.color;
-                if (num > 0f)
+                __result -= pawnData.caravanRider.GetStatValue(StatDefOf.Mass);
+                if(__result < 0)
                 {
-                    GUI.color = Color.green;
+                    __result = 0;
                 }
-                else if (num < 0f)
-                {
-                    GUI.color = Color.red;
-                }
-                else
-                {
-                    GUI.color = Color.gray;
-                }
-                Widgets.Label(rect, num.ToStringMassOffset());
-                object[] types = {typeof(TransferableOneWay), typeof(float), typeof(float), typeof(float), typeof(int)};
-                object[] parms = { trad, cap, 0f, gearMass, invMass };
-                TooltipHandler.TipRegion(rect, () => Traverse.Create(__instance).Method("GetPawnMassTip", types, parms).GetValue<String>(), trad.GetHashCode() * 59);
-                GUI.color = oldColor;
-                return false;
+                Log.Message("changed result, is now: " + __result);
+
             }
+            */
         }
 
     }
-
- }
+    [HarmonyPatch(typeof(TransferableOneWayWidget), "FillMainRect")]
+    static class TransferableOneWayWidget_FillMainRect
+    {
+        static void Postfix(ref bool anythingChanged)
+        {
+            anythingChanged = true;
+        }
+    }
+}

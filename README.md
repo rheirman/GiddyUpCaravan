@@ -2,7 +2,7 @@
 
 ## Dependencies
 
-Depends on Giddy-up! Core, and Hugslib. Load order should be HugsLib->Giddy-up Core->Giddy-up! Battle Mounts
+Depends on Giddy-up! Core, and Hugslib. Load order should be HugsLib->Giddy-up Core->Giddy-up! Caravan
 
 ## Install
 

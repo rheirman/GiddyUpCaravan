@@ -1,4 +1,4 @@
-# Giddy-up! Battlemounts
+# Giddy-up! Caravan
 
 ## Dependencies
 

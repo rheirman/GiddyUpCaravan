@@ -14,8 +14,14 @@ namespace GiddyUpCaravan.Harmony
     {
         static void Postfix(ref Pawn p, ref float __result)
         {
-            ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(p);
-            if (pawnData.caravanRider == null)
+            ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
+            if(store == null)//this check is needed because some mods call this function on world load 
+            {
+                return;
+            }
+
+            ExtendedPawnData pawnData = store.GetExtendedDataFor(p);
+            if (pawnData == null || pawnData.caravanRider == null)
             {
                 return;
             }

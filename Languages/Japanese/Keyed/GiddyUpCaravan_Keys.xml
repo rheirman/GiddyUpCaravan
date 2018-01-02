@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <GU_Car_CompleteCaravanBonus_Title>全員騎乗ボーナス</GU_Car_CompleteCaravanBonus_Title>
+  <GU_Car_CompleteCaravanBonus_Description>キャラバン隊のすべての入植者が騎乗動物に乗っている際に与えられる、キャラバン隊の移動速度へのボーナスです。</GU_Car_CompleteCaravanBonus_Description>
+  <GU_Car_incompleteCaravanBonusCap_Title>全員騎乗でない場合の最大ボーナス</GU_Car_incompleteCaravanBonusCap_Title>
+  <GU_Car_incompleteCaravanBonusCap_Description>この設定された最大値まで、動物一頭当たりの移動速度ボーナスが、騎乗動物に乗っている各入植者に適用されます。この最大値は、キャラバン隊に編成されている一人以外の入植者の全員が騎乗しているときでも適用されます。しかし、このボーナスは、すべての入植者が騎乗しているときは適用されません。</GU_Car_incompleteCaravanBonusCap_Description>
+
+  <GU_Car_visitorMountChance_Title>友好NPC騎乗確率</GU_Car_visitorMountChance_Title>
+  <GU_Car_visitorMountChance_Description>プレイヤー以外の友好的なポーンが訪問してくる際に動物に騎乗している確率です。</GU_Car_visitorMountChance_Description>
+  <GU_Car_visitorMountChanceTribal_Title>友好NPC(部族)騎乗確率</GU_Car_visitorMountChanceTribal_Title>
+  <GU_Car_visitorMountChanceTribal_Description>プレイヤー以外の友好的な部族ポーンが訪問してくる際に動物に騎乗している確率です。</GU_Car_visitorMountChanceTribal_Description>
+  <GU_Car_InBiomeWeight_Title>友好NPC(環境合致)騎乗確率</GU_Car_InBiomeWeight_Title>
+  <GU_Car_InBiomeWeight_Description>友好的なポーンが訪問してくる際にコロニーの気候環境に生息する動物に騎乗している確率です。
+　合計が100%でない場合、確率は100%に修正されます。</GU_Car_InBiomeWeight_Description>
+  <GU_Car_OutBiomeWeight_Title>友好NPC(別環境)騎乗確率</GU_Car_OutBiomeWeight_Title>
+  <GU_Car_OutBiomeWeight_Description>友好的なポーンが訪問してくる際に他の気候環境に生息する動物に騎乗している確率です。
+　合計が100%でない場合、確率は100%に修正されます。</GU_Car_OutBiomeWeight_Description>
+  <GU_Car_NonWildWeight_Title>友好NPC(非野生)騎乗確率</GU_Car_NonWildWeight_Title>
+  <GU_Car_NonWildWeight_Description>友好的なポーンが訪問してくる際に野生では生息していない動物に騎乗している確率です。
+　合計が100%でない場合、確率は100%に修正されます。</GU_Car_NonWildWeight_Description>
+
+  <!-- note for translators: The following items need to be really short to fit -->
+  <GU_Car_No_Rider>騎手が居ない</GU_Car_No_Rider>
+  <GU_Car_Set_Rider>騎手を設定</GU_Car_Set_Rider>
+  <GU_Car_NotInModOptions>騎乗禁止</GU_Car_NotInModOptions>
+  <GU_Car_NotFullyGrown>成獣でない</GU_Car_NotFullyGrown>
+  <GU_Car_NeedsObedience>服従が必要</GU_Car_NeedsObedience>
+  <GU_Car_AnimalNotSelected>未選択</GU_Car_AnimalNotSelected>
+  <GU_Car_PawnNotSelected>未選択</GU_Car_PawnNotSelected>
+
+
+</LanguageData>

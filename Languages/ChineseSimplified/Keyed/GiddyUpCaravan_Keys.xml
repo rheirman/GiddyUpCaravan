@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <GU_Car_CompleteCaravanBonus_Title>所有殖民者骑乘奖励</GU_Car_CompleteCaravanBonus_Title>
+  <GU_Car_CompleteCaravanBonus_Description>当所有殖民者都骑乘的时候，远征队的速度也会增加</GU_Car_CompleteCaravanBonus_Description>
+  <GU_Car_incompleteCaravanBonusCap_Title>部分殖民者骑乘时最大奖励</GU_Car_incompleteCaravanBonusCap_Title>
+  <GU_Car_incompleteCaravanBonusCap_Description>每当一个殖民者骑乘时，提升这个比例的速度，当所有殖民者都骑乘的时候，这个奖励不适用</GU_Car_incompleteCaravanBonusCap_Description>
+
+  <GU_Car_visitorMountChance_Title>友好NPC骑乘几率</GU_Car_visitorMountChance_Title>
+  <GU_Car_visitorMountChance_Description>友好NPC骑乘动物的几率。</GU_Car_visitorMountChance_Description>
+  <GU_Car_visitorMountChanceTribal_Title>友好的部落人骑乘几率</GU_Car_visitorMountChanceTribal_Title>
+  <GU_Car_visitorMountChanceTribal_Description>友好的部落人骑乘动物的几率</GU_Car_visitorMountChanceTribal_Description>
+  <GU_Car_InBiomeWeight_Title>友好NPC的坐骑是该生态动物的几率</GU_Car_InBiomeWeight_Title>
+  <GU_Car_InBiomeWeight_Description>友好NPC动物从全部可乘骑动物中随机筛选的几率</GU_Car_InBiomeWeight_Description>
+  <GU_Car_OutBiomeWeight_Title>友好NPC骑乘随机动物的几率</GU_Car_OutBiomeWeight_Title>
+  <GU_Car_OutBiomeWeight_Description>友好NPC动物从全部可乘骑动物中随机筛选的几率</GU_Car_OutBiomeWeight_Description>
+  <GU_Car_NonWildWeight_Title>友好NPC的坐骑为非野生动物的几率</GU_Car_NonWildWeight_Title>
+  <GU_Car_NonWildWeight_Description>友好NPC的坐骑为非野生动物的几率</GU_Car_NonWildWeight_Description>
+
+  <!-- note for translators: The following items need to be really short to fit -->
+  <GU_Car_No_Rider>无骑乘者</GU_Car_No_Rider>
+  <GU_Car_Set_Rider>设置骑乘者</GU_Car_Set_Rider>
+  <GU_Car_NotInModOptions>动物未设置为可骑乘</GU_Car_NotInModOptions>
+  <GU_Car_NotFullyGrown>动物未完全成熟</GU_Car_NotFullyGrown>
+  <GU_Car_NeedsObedience>需要训练顺从</GU_Car_NeedsObedience>
+  <GU_Car_AnimalNotSelected>未选择</GU_Car_AnimalNotSelected>
+  <GU_Car_PawnNotSelected>未选择殖民者</GU_Car_PawnNotSelected>
+
+
+</LanguageData>

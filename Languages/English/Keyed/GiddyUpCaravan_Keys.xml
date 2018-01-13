@@ -13,7 +13,7 @@ This bonus is not applied when all colonists are riding.</GU_Car_incompleteCarav
 <GU_Car_visitorMountChanceTribal_Description>Chance that visiting friendly tribal NPC pawns ride an animal</GU_Car_visitorMountChanceTribal_Description>
 <GU_Car_InBiomeWeight_Title>Friendly NPC mount from your biome chance</GU_Car_InBiomeWeight_Title>
 <GU_Car_InBiomeWeight_Description>The chance a mount used by a friendly pawn is one from your biome.
- Chances are normalized to 100 if the sum is not 100</GU_Car_InBiomeWeight_Description>
+ Chances are normalized to 100% if the sum is not 100</GU_Car_InBiomeWeight_Description>
 <GU_Car_OutBiomeWeight_Title>Friendly NPC from any biome chance</GU_Car_OutBiomeWeight_Title>
 <GU_Car_OutBiomeWeight_Description>The chance a mount used by a friendly NPC pawn is one from any biome.
  Chances are normalized to 100% if the sum is not 100</GU_Car_OutBiomeWeight_Description>

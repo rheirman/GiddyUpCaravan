@@ -20,7 +20,7 @@ namespace GiddyUpCaravan.Harmony
         {
 
             Log.Message("called Caravan_PathFollower_CostToMove");
-            if(caravan == null)
+            if(caravan != null)
             {
                 __result = Utilities.CaravanUtility.CostToMove(caravan.PawnsListForReading, start, end, yearPercent);
             }

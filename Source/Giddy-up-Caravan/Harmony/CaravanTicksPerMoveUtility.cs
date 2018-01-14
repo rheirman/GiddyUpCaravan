@@ -20,50 +20,7 @@ namespace GiddyUpCaravan.Harmony
     {
         static void Postfix(List<Pawn> pawns, ref int __result)
         {
-            int pawnsWithMount = 0;
-            int pawnsWithoutMount = 0;
-
-            ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
-            if (store == null)
-            {
-                return;
-            }
-
-            foreach (Pawn pawn in pawns)
-            {
-                ExtendedPawnData pawndata = store.GetExtendedDataFor(pawn);
-                if(pawndata != null && pawn.IsColonist && pawn.ridingCaravanMount())
-                {
-                    pawnsWithMount++;
-                }
-                else if (pawn.IsColonist)
-                {
-                    pawnsWithoutMount++;
-                }
-            }
-            
-            if(pawnsWithoutMount == 0) //no pawns without mount, apply full speed bonus
-            {
-                Log.Message("result before bonus");
-                __result = Mathf.RoundToInt(__result / ((100f + Base.completeCaravanBonus.Value) / 100));
-                Log.Message("result after bonus");
-
-            }
-            else //otherwise apply small per mount bonus
-            {
-                //Log.Message("pawnsWithoutMount: " + pawnsWithoutMount);
-
-                int total = pawnsWithMount + pawnsWithoutMount;
-                int adjustedTotal = total > 1 ? total- 1 : 1; //adjusted total makes sure incompleteCaravanBonusCap is achievable and prevents div/0. 
-                float isMountedFraction =  (float) pawnsWithMount / adjustedTotal;
-                //Log.Message("isMountedFraction: " + isMountedFraction);
-                __result = Mathf.RoundToInt(__result / ((100f + isMountedFraction * Base.incompleteCaravanBonusCap.Value) / 100f));
-
-            }
-
-            //Log.Message("result ticks per move: " + __result);
-            
-
+            __result = Utilities.CaravanUtility.applySpeedBonus(__result, pawns);
         }
 
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)

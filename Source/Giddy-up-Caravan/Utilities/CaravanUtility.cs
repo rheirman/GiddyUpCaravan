@@ -23,54 +23,61 @@ namespace GiddyUpCaravan.Utilities
             return false;
         }
 
-        // RimWorld.Planet.CaravanTicksPerMoveUtility
-        public static int GetDefaultTicksPerMove(Caravan caravan)
+        public static int applySpeedBonus(int ticksPerMove, List<Pawn> pawns)
         {
-            if (caravan == null)
+            int pawnsWithMount = 0;
+            int pawnsWithoutMount = 0;
+
+            ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
+            if (store == null)
             {
-                return 2500;
+                return ticksPerMove;
             }
-            return GetDefaultTicksPerMove(caravan.PawnsListForReading);
-        }
-
-
-        public static int GetDefaultTicksPerMove(List<Pawn> pawns)
-        {
-            if (pawns.Any<Pawn>())
+            foreach (Pawn pawn in pawns)
             {
-                float num = 0f;
-                for (int i = 0; i < pawns.Count; i++)
+                ExtendedPawnData pawndata = store.GetExtendedDataFor(pawn);
+                if (pawndata != null && pawn.IsColonist && pawn.ridingCaravanMount())
                 {
-                    int num2 = (!pawns[i].Downed) ? pawns[i].TicksPerMoveCardinal : 450;
-                    num += (float)num2 / (float)pawns.Count;
+                    pawnsWithMount++;
                 }
-                num *= 190f;
-                return Mathf.Max(Mathf.RoundToInt(num), 1);
+                else if (pawn.IsColonist)
+                {
+                    pawnsWithoutMount++;
+                }
             }
-            return 2500;
+
+            if (pawnsWithoutMount == 0) //no pawns without mount, apply full speed bonus
+            {
+                Log.Message("result before bonus");
+                ticksPerMove = Mathf.RoundToInt(ticksPerMove / ((100f + Base.completeCaravanBonus.Value) / 100));
+                Log.Message("result after bonus");
+
+            }
+            else //otherwise apply small per mount bonus
+            {
+                //Log.Message("pawnsWithoutMount: " + pawnsWithoutMount);
+
+                int total = pawnsWithMount + pawnsWithoutMount;
+                int adjustedTotal = total > 1 ? total - 1 : 1; //adjusted total makes sure incompleteCaravanBonusCap is achievable and prevents div/0. 
+                float isMountedFraction = (float)pawnsWithMount / adjustedTotal;
+                //Log.Message("isMountedFraction: " + isMountedFraction);
+                ticksPerMove = Mathf.RoundToInt(ticksPerMove / ((100f + isMountedFraction * Base.incompleteCaravanBonusCap.Value) / 100f));
+
+            }
+            return ticksPerMove;
         }
+
         public static int CostToMove(List<Pawn> pawns, int start, int end, float yearPercent)
         {
 
-            //This part makes sure the static tile costs are also decreased by mount usage, proportionally to the dynamic costs
+            //This part makes sure the static tile costs are also decreased by mount usage
             int tileCost = WorldPathGrid.CalculatedCostAt(end, false, yearPercent);
             tileCost = Mathf.RoundToInt((float)tileCost);
 
-            Log.Message("tile cost: " + tileCost);
-
             int adjustedTicksPerMove = CaravanTicksPerMoveUtility.GetTicksPerMove(pawns);
-            Log.Message("adjustedTicksPerMove: " + adjustedTicksPerMove);
-            
-            int defaultTicksPerMove = Utilities.CaravanUtility.GetDefaultTicksPerMove(pawns);
-            Log.Message("defaultTicksPerMove: " + defaultTicksPerMove);
-
-            int result = adjustedTicksPerMove + tileCost;
-
-            float factor = ((float)defaultTicksPerMove/adjustedTicksPerMove);
-            Log.Message("factor: " + factor);
-            Log.Message("result was: " + result);
-            result -= Mathf.RoundToInt(tileCost * (1f- 1f/factor));
-            Log.Message("result now is: " + result);
+            Log.Message("tileCost: " + tileCost);
+            Log.Message("adjustedTileCost: " + Utilities.CaravanUtility.applySpeedBonus(tileCost, pawns));
+            int result = adjustedTicksPerMove + Utilities.CaravanUtility.applySpeedBonus(tileCost, pawns);
             result = Mathf.RoundToInt((float)result * Find.WorldGrid.GetRoadMovementMultiplierFast(start, end));
             Log.Message("result after road multiplier is: " + result);
 

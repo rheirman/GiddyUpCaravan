@@ -60,7 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base.cs" />
+    <Compile Include="Harmony\Caravan.cs" />
+    <Compile Include="Harmony\CaravanArrivalTimeEstimator.cs" />
     <Compile Include="Harmony\CaravanTicksPerMoveUtility.cs" />
+    <Compile Include="Harmony\Caravan_PathFollower.cs" />
     <Compile Include="Harmony\IncidentWorker_TraderCaravanArrival.cs" />
     <Compile Include="Harmony\IncidentWorker_TravelerGroup.cs" />
     <Compile Include="Harmony\IncidentWorker_VisitorGroup.cs" />
@@ -68,6 +71,7 @@
     <Compile Include="Harmony\MassUtility_Capacity.cs" />
     <Compile Include="Harmony\Pawn_TicksPerMove.cs" />
     <Compile Include="Harmony\TransferableOneWayWidget.cs" />
+    <Compile Include="Harmony\WorldRoutePlanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\CaravanUtility.cs" />
     <Compile Include="Utilities\VisitorMountUtility.cs" />

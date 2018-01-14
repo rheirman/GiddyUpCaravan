@@ -22,11 +22,17 @@ namespace GiddyUpCaravan.Harmony
         {
             int pawnsWithMount = 0;
             int pawnsWithoutMount = 0;
-          
-            foreach(Pawn pawn in pawns)
+
+            ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
+            if (store == null)
             {
-                ExtendedPawnData pawndata = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
-                if(pawn.IsColonist && pawn.ridingCaravanMount())
+                return;
+            }
+
+            foreach (Pawn pawn in pawns)
+            {
+                ExtendedPawnData pawndata = store.GetExtendedDataFor(pawn);
+                if(pawndata != null && pawn.IsColonist && pawn.ridingCaravanMount())
                 {
                     pawnsWithMount++;
                 }
@@ -38,7 +44,10 @@ namespace GiddyUpCaravan.Harmony
             
             if(pawnsWithoutMount == 0) //no pawns without mount, apply full speed bonus
             {
+                Log.Message("result before bonus");
                 __result = Mathf.RoundToInt(__result / ((100f + Base.completeCaravanBonus.Value) / 100));
+                Log.Message("result after bonus");
+
             }
             else //otherwise apply small per mount bonus
             {
@@ -51,6 +60,8 @@ namespace GiddyUpCaravan.Harmony
                 __result = Mathf.RoundToInt(__result / ((100f + isMountedFraction * Base.incompleteCaravanBonusCap.Value) / 100f));
 
             }
+
+            //Log.Message("result ticks per move: " + __result);
             
 
         }
@@ -81,13 +92,20 @@ namespace GiddyUpCaravan.Harmony
         public static int adjustTicksPerMove(int num2, int index, List<Pawn> pawns)
         {
             Pawn pawn = pawns[index];
-            ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
-            if (pawnData.caravanMount != null && pawn.ridingCaravanMount())
+            ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
+            if(store == null)
             {
+                return num2;
+            }
+            ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
+            if (pawnData != null && pawnData.caravanMount != null && pawn.ridingCaravanMount())
+            {
+                Log.Message("Returning adjusted ticks per move: " + "TicsPerMove was: " + num2 + ", but now: " + TicksPerMoveUtility.adjustedTicksPerMove(pawn, pawnData.caravanMount, true));
                 return TicksPerMoveUtility.adjustedTicksPerMove(pawn, pawnData.caravanMount, true);
             }
             else
             {
+                Log.Message("Returning default ticks per move: " + num2);
                 return num2;
             }
         }

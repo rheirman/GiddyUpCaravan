@@ -79,6 +79,7 @@ namespace GiddyUpCaravan.Harmony
                         pawns.Add(tow.AnyThing as Pawn);
                     }
                 }
+                Log.Message("number of pawns: " + pawns.Count);
                 //pawns = TransferableUtility.GetPawnsFromTransferables(cachedTransferables);
                 //It quacks like a duck, so it is one!
             }

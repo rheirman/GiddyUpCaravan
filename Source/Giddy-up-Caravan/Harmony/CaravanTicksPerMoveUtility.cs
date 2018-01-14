@@ -22,11 +22,16 @@ namespace GiddyUpCaravan.Harmony
         {
             int pawnsWithMount = 0;
             int pawnsWithoutMount = 0;
-          
-            foreach(Pawn pawn in pawns)
+            ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
+            if(store == null)
             {
-                ExtendedPawnData pawndata = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
-                if(pawn.IsColonist && pawn.ridingCaravanMount())
+                return;
+            }
+            
+            foreach (Pawn pawn in pawns)
+            {
+                ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
+                if(pawnData != null && pawn.IsColonist && pawn.ridingCaravanMount())
                 {
                     pawnsWithMount++;
                 }
@@ -81,7 +86,12 @@ namespace GiddyUpCaravan.Harmony
         public static int adjustTicksPerMove(int num2, int index, List<Pawn> pawns)
         {
             Pawn pawn = pawns[index];
-            ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
+            ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
+            if (store == null)
+            {
+                return num2;
+            }
+            ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
             if (pawnData.caravanMount != null && pawn.ridingCaravanMount())
             {
                 return TicksPerMoveUtility.adjustedTicksPerMove(pawn, pawnData.caravanMount, true);

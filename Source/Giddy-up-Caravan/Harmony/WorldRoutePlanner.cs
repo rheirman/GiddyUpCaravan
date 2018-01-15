@@ -21,7 +21,6 @@ namespace GiddyUpCaravan.Harmony
 
                 if(instructionsList[i].opcode == OpCodes.Ldloc_3)
                 {
-                    Log.Message("replacing ldloc_3");
                     yield return new CodeInstruction(OpCodes.Ldarg_0);
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(WorldRoutePlanner), "get_CaravanPawns")); //this replaces get_CaravanTicksPerMove with a reference to the Caravan, which is needed in the modified EstimatedTicksToArrive
                     continue;

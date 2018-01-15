@@ -60,7 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base.cs" />
-    <Compile Include="Harmony\Caravan.cs" />
     <Compile Include="Harmony\CaravanArrivalTimeEstimator.cs" />
     <Compile Include="Harmony\CaravanTicksPerMoveUtility.cs" />
     <Compile Include="Harmony\Caravan_PathFollower.cs" />

@@ -48,10 +48,7 @@ namespace GiddyUpCaravan.Utilities
 
             if (pawnsWithoutMount == 0) //no pawns without mount, apply full speed bonus
             {
-                Log.Message("result before bonus");
                 ticksPerMove = Mathf.RoundToInt(ticksPerMove / ((100f + Base.completeCaravanBonus.Value) / 100));
-                Log.Message("result after bonus");
-
             }
             else //otherwise apply small per mount bonus
             {
@@ -75,11 +72,8 @@ namespace GiddyUpCaravan.Utilities
             tileCost = Mathf.RoundToInt((float)tileCost);
 
             int adjustedTicksPerMove = CaravanTicksPerMoveUtility.GetTicksPerMove(pawns);
-            Log.Message("tileCost: " + tileCost);
-            Log.Message("adjustedTileCost: " + Utilities.CaravanUtility.applySpeedBonus(tileCost, pawns));
             int result = adjustedTicksPerMove + Utilities.CaravanUtility.applySpeedBonus(tileCost, pawns);
             result = Mathf.RoundToInt((float)result * Find.WorldGrid.GetRoadMovementMultiplierFast(start, end));
-            Log.Message("result after road multiplier is: " + result);
 
             return result;
         }
@@ -95,7 +89,6 @@ namespace GiddyUpCaravan.Utilities
         public static int EstimatedTicksToArrive(int from, int to, WorldPath path, float nextTileCostLeft, List<Pawn> pawns, int curTicksAbs)
         {
 
-            Log.Message("modified estimated ticks called instead of vanilla one");
             int num = 0;
             int num2 = from;
             int num3 = 0;

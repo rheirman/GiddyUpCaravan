@@ -81,7 +81,6 @@ namespace GiddyUpCaravan.Harmony
                 }
                 //It quacks like a duck, so it is one!
             }
-            Log.Message("number of pawns: " + pawns.Count);
             setSelectedForCaravan(pawn, trad);
             if (pawn.RaceProps.Animal && pawns.Count > 0)
             {
@@ -103,33 +102,28 @@ namespace GiddyUpCaravan.Harmony
 
             if (trad.CountToTransfer == 0)
             {
-                Log.Message("set selected for caravan false for pawn: " + pawn.Label);
                 pawnData.selectedForCaravan = false;
                 if (pawnData.caravanMount != null)
                 {
                     ExtendedPawnData mountData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawnData.caravanMount);
                     mountData.caravanRider = null;
                     pawnData.caravanMount = null;
-                    Log.Message("set animaldata.caravanRider to null");
                 }
                 if (pawnData.caravanRider != null)
                 {
                     ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawnData.caravanRider);
                     riderData.caravanMount = null;
                     pawnData.caravanRider = null;
-                    Log.Message("set animaldata.caravanRider to null");
                 }
             }
             else
             {
-                Log.Message("set selected for caravan true for pawn: " + pawn.Label);
                 pawnData.selectedForCaravan = true;
             }
         }
 
         private static void handleAnimal(float num, Rect buttonRect, Pawn animal, List<Pawn> pawns)
         {
-            Log.Message("handleAnimal is called");
             ExtendedPawnData animalData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animal);
             Text.Anchor = TextAnchor.MiddleLeft;
 
@@ -160,18 +154,12 @@ namespace GiddyUpCaravan.Harmony
                 buttonText = "GU_Car_NotInModOptions".Translate();
                 canMount = false;
             }
-            if(animalData.caravanRider == null)
-            {
-                Log.Message("animalData.caravanRider is null");
-            }
 
             if (animalData.caravanRider != null)
             {
-                Log.Message("animalData.caravanRider is not null");
                 ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
                 if (riderData.selectedForCaravan)
                 {
-                    Log.Message("selected for caravan changing button text");
                     buttonText = animalData.caravanRider.Name.ToStringShort;
                 }
             }
@@ -188,15 +176,12 @@ namespace GiddyUpCaravan.Harmony
                         ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
                         if (!pawnData.selectedForCaravan)
                         {
-                            Log.Message("pawnData.caravanMount is not selected for caravan, continue" + pawn.Label);
                             list.Add(new FloatMenuOption(pawn.Name.ToStringShort + " (" + "GU_Car_PawnNotSelected".Translate() + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null));
                             continue;
                         }
 
                         if (pawnData.caravanMount != null)
                         {
-                            Log.Message("pawn already has mount" + pawn.Label);
-
                             continue;
                         }
                         list.Add(new FloatMenuOption(pawn.Name.ToStringShort, delegate
@@ -223,7 +208,6 @@ namespace GiddyUpCaravan.Harmony
                             ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
                             riderData.caravanMount = null;
                         }
-                        Log.Message("set animaldata.caravanRider to null");
                         animalData.caravanRider = null;
                     }
                 }, MenuOptionPriority.Low, null, null, 0f, null, null));

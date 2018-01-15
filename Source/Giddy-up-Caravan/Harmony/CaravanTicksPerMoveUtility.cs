@@ -57,12 +57,12 @@ namespace GiddyUpCaravan.Harmony
             ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
             if (pawnData != null && pawnData.caravanMount != null && pawn.ridingCaravanMount())
             {
-                Log.Message("Returning adjusted ticks per move: " + "TicsPerMove was: " + num2 + ", but now: " + TicksPerMoveUtility.adjustedTicksPerMove(pawn, pawnData.caravanMount, true));
+                //Log.Message("Returning adjusted ticks per move: " + "TicsPerMove was: " + num2 + ", but now: " + TicksPerMoveUtility.adjustedTicksPerMove(pawn, pawnData.caravanMount, true));
                 return TicksPerMoveUtility.adjustedTicksPerMove(pawn, pawnData.caravanMount, true);
             }
             else
             {
-                Log.Message("Returning default ticks per move: " + num2);
+                //Log.Message("Returning default ticks per move: " + num2);
                 return num2;
             }
         }

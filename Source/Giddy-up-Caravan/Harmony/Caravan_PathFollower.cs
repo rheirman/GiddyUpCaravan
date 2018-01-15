@@ -19,7 +19,6 @@ namespace GiddyUpCaravan.Harmony
         static void Postfix(ref Caravan caravan, int start, int end, float yearPercent, ref int __result)
         {
 
-            Log.Message("called Caravan_PathFollower_CostToMove");
             if(caravan != null)
             {
                 __result = Utilities.CaravanUtility.CostToMove(caravan.PawnsListForReading, start, end, yearPercent);

@@ -18,6 +18,16 @@ namespace GiddyUpCaravan.Harmony
     [HarmonyPatch(typeof(CaravanTicksPerMoveUtility), "GetTicksPerMove")]
     class CaravanTicksPerMoveUtility_GetTicksPerMove
     {
+        static bool Prefix(List<Pawn> pawns, ref int __result)
+        {
+            if(pawns == null)
+            {
+                __result = 2500;
+                return false;
+            }
+            return true;
+        }
+
         static void Postfix(List<Pawn> pawns, ref int __result)
         {
             __result = Utilities.CaravanUtility.applySpeedBonus(__result, pawns);
@@ -48,12 +58,13 @@ namespace GiddyUpCaravan.Harmony
 
         public static int adjustTicksPerMove(int num2, int index, List<Pawn> pawns)
         {
-            Pawn pawn = pawns[index];
             ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
-            if(store == null)
+            if(store == null || pawns == null || pawns.Count == 0 )
             {
                 return num2;
             }
+            Pawn pawn = pawns[index];
+
             ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
             if (pawnData != null && pawnData.caravanMount != null && pawn.ridingCaravanMount())
             {

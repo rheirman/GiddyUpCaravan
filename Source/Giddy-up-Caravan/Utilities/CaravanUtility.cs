@@ -29,7 +29,7 @@ namespace GiddyUpCaravan.Utilities
             int pawnsWithoutMount = 0;
 
             ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
-            if (store == null)
+            if (store == null || pawns == null)
             {
                 return ticksPerMove;
             }

@@ -81,7 +81,13 @@ namespace GiddyUpCaravan.Utilities
         //Almost literal copy from vanilla, except Caravan object exposed here. 
         public static int EstimatedTicksToArrive(int from, int to, WorldPath path, float nextTileCostLeft, Caravan caravan, int curTicksAbs)
         {
-            return EstimatedTicksToArrive(from, to, path, nextTileCostLeft, caravan.PawnsListForReading, curTicksAbs);
+            List<Pawn> pawns = null;
+            if(caravan != null)
+            {
+                pawns = caravan.PawnsListForReading;
+            }
+
+            return EstimatedTicksToArrive(from, to, path, nextTileCostLeft, pawns, curTicksAbs);
         }
 
 

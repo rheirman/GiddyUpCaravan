@@ -2,9 +2,9 @@
 <LanguageData>
 
   <GU_Car_CompleteCaravanBonus_Title>Todos los colonos con bono de montura</GU_Car_CompleteCaravanBonus_Title>
-  <GU_Car_CompleteCaravanBonus_Description>Bonificación de la velocidad de movimiento de la caravana cuando todos los colonos en una caravana montan un animal</GU_Car_CompleteCaravanBonus_Description>
+  <GU_Car_CompleteCaravanBonus_Description>Bonificación en la velocidad de movimiento de la caravana cuando todos los colonos (en la caravana) montan un animal</GU_Car_CompleteCaravanBonus_Description>
   <GU_Car_incompleteCaravanBonusCap_Title>No todos los colonos con la bonificación máxima</GU_Car_incompleteCaravanBonusCap_Title>
-  <GU_Car_incompleteCaravanBonusCap_Description>Se aplica una bonificación por animal para cada colono que monta, hasta el máximo configurado en este entorno. Este máximo se logra cuando todos los colonos menos uno están montando.
+  <GU_Car_incompleteCaravanBonusCap_Description>Se aplica una bonificación para cada colono que monta un animal, hasta el máximo configurado en este entorno. Este máximo se logra cuando todos los colonos menos uno están montando.
 Esta bonificación no se aplica cuando todos los colonos están montando.</GU_Car_incompleteCaravanBonusCap_Description>
 
   <GU_Car_visitorMountChance_Title>Probabilidad de montaje NPC amistoso</GU_Car_visitorMountChance_Title>
@@ -25,7 +25,7 @@ Esta bonificación no se aplica cuando todos los colonos están montando.</GU_Ca
   <GU_Car_No_Rider>Sin jinete</GU_Car_No_Rider>
   <GU_Car_Set_Rider>Establecer jinete</GU_Car_Set_Rider>
   <GU_Car_NotInModOptions>Montura prohibida</GU_Car_NotInModOptions>
-  <GU_Car_NotFullyGrown>No completamente desarrollado</GU_Car_NotFullyGrown>
+  <GU_Car_NotFullyGrown>No desarrollado</GU_Car_NotFullyGrown>
   <GU_Car_NeedsObedience>Necesita obediencia</GU_Car_NeedsObedience>
   <GU_Car_AnimalNotSelected>No seleccionado</GU_Car_AnimalNotSelected>
   <GU_Car_PawnNotSelected>no seleccionado</GU_Car_PawnNotSelected>

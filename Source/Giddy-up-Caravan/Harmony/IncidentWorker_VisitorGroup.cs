@@ -49,21 +49,6 @@ namespace GiddyUpCaravan.Harmony
                 }
             }
             pawns = pawns.Except(animals).ToList();
-
-            Log.Message("list after intersection");
-            foreach (Pawn pawn in pawns)
-            {
-                Log.Message(pawn.Label);
-            }
-
-        }
-        static void Postfix(ref List<Pawn> pawns)
-        {
-            Log.Message("list in postfix");
-            foreach (Pawn pawn in pawns)
-            {
-                 Log.Message(pawn.Label);
-            }
         }
     }
 

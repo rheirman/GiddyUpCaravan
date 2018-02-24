@@ -11,9 +11,10 @@ namespace GiddyUpCaravan
 {
     public class Base : ModBase
     {
+        internal const string DropAnimal_NPC_LABEL = "GU_Car_Area_GU_DropAnimal_NPC";
+
         internal static SettingHandle<int> completeCaravanBonus;
         internal static SettingHandle<int> incompleteCaravanBonusCap;
-
 
         internal static SettingHandle<int> visitorMountChance;
         internal static SettingHandle<int> visitorMountChanceTribal;

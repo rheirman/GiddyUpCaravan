@@ -41,7 +41,7 @@ namespace GiddyUpCaravan.Harmony
             }
 
 
-            if (pawn.IsColonistPlayerControlled || pawn.RaceProps.Animal)
+            if (pawn.IsColonistPlayerControlled || pawn.RaceProps.Animal || pawn.Faction.HostileTo(Faction.OfPlayer))
             {            
                 return;
             }
@@ -78,15 +78,15 @@ namespace GiddyUpCaravan.Harmony
             }
 
 
-            Log.Message("curLordToil: " + pawn.GetLord().CurLordToil.ToString() + ", pawn name: " + pawn.Name);
-            Log.Message("lordJob: " + pawn.GetLord().LordJob + ", pawn name: " + pawn.Name);
-            Log.Message("lord.CurLordToil.GetType().Name" + lord.CurLordToil.GetType().Name);
+            //Log.Message("curLordToil: " + pawn.GetLord().CurLordToil.ToString() + ", pawn name: " + pawn.Name);
+            //Log.Message("lordJob: " + pawn.GetLord().LordJob + ", pawn name: " + pawn.Name);
+            //Log.Message("lord.CurLordToil.GetType().Name" + lord.CurLordToil.GetType().Name);
 
             if (lord.CurLordToil is LordToil_ExitMapAndEscortCarriers || lord.CurLordToil is LordToil_Travel || lord.CurLordToil is LordToil_ExitMap || lord.CurLordToil is LordToil_ExitMapTraderFighting)
             {
                 if (PawnData.owning != null && PawnData.mount == null && !PawnData.owning.Downed && PawnData.owning.Spawned && !pawn.IsBurning() && !pawn.Downed)
                 {
-                    Log.Message("Pawn " + pawn.Name + " should mount animal!");
+                    //Log.Message("Pawn " + pawn.Name + " should mount animal!");
                     mountAnimal(__instance, pawn, PawnData, ref __result);
 
                 }

@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using GiddyUpCore.Storage;
+using Harmony;
 using RimWorld;
 using System;
 using System.Collections.Generic;
@@ -15,14 +16,14 @@ namespace GiddyUpCaravan.Harmony
         static bool Prefix(Pawn p, ref TraderCaravanRole __result)
         {
             //Log.Message("GetTraderCaravanRole called");
-            if (p.RaceProps.Animal && p.playerSettings != null)
+            if (p.RaceProps.Animal)
             {
                 //Log.Message("animal!");
+                ExtendedPawnData pawnData = Base.GetExtendedDataStorage().GetExtendedDataFor(p);
 
-                if (p.playerSettings.master != null)
+                if (pawnData.ownedBy != null)
                 {
                     //Log.Message("animal master set, setting role to guard");
-
                     __result = TraderCaravanRole.Guard;
                     return false;
                 }

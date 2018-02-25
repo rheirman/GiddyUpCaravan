@@ -1,5 +1,6 @@
 ﻿using GiddyUpCore;
 using GiddyUpCore.Storage;
+using GiddyUpCore.Utilities;
 using Harmony;
 using RimWorld;
 using System;
@@ -14,6 +15,7 @@ using Verse;
 
 namespace GiddyUpCaravan.Harmony
 {
+
     [HarmonyPatch(typeof(TransferableOneWayWidget), "DoRow")]
     static class TransferableOneWayWidget_DoRow
     {
@@ -55,6 +57,16 @@ namespace GiddyUpCaravan.Harmony
             {
                 return num; //not an animal, return; 
             }
+            /*
+            if (trad.CountToTransfer % 2 == 0)
+            {
+                Traverse.Create(trad).Property("CountToTransfer").SetValue(trad.CountToTransfer + 1);
+            }
+            else
+            {
+                Traverse.Create(trad).Property("CountToTransfer").SetValue(trad.CountToTransfer - 1);
+            }
+            */
 
             Rect buttonRect = new Rect(num - buttonWidth, 0f, buttonWidth, rect.height);
 
@@ -100,27 +112,45 @@ namespace GiddyUpCaravan.Harmony
 
             ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
 
-            if (trad.CountToTransfer == 0)
+            if (trad.CountToTransfer == 0) //unset pawndata when pawn is not selected for caravan. 
             {
                 pawnData.selectedForCaravan = false;
                 if (pawnData.caravanMount != null)
                 {
-                    ExtendedPawnData mountData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawnData.caravanMount);
-                    mountData.caravanRider = null;
-                    pawnData.caravanMount = null;
+                    unsetDataForRider(pawnData);
                 }
                 if (pawnData.caravanRider != null)
                 {
-                    ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawnData.caravanRider);
-                    riderData.caravanMount = null;
-                    pawnData.caravanRider = null;
+                    unsetDataForMount(pawnData);
                 }
             }
-            else
+            if(pawnData.caravanMount != null && (pawnData.caravanMount.Dead || pawnData.caravanMount.Downed))
+            {
+                unsetDataForRider(pawnData);
+            }
+
+            if (trad.CountToTransfer > 0)
             {
                 pawnData.selectedForCaravan = true;
             }
         }
+
+        private static void unsetDataForRider(ExtendedPawnData pawnData)
+        {
+            ExtendedPawnData mountData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawnData.caravanMount);
+            mountData.caravanRider = null;
+            pawnData.caravanMount = null;
+        }
+
+        private static void unsetDataForMount(ExtendedPawnData pawnData)
+        {
+            ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawnData.caravanRider);
+            riderData.caravanMount = null;
+            pawnData.caravanRider = null;
+        }
+
+
+
 
         private static void handleAnimal(float num, Rect buttonRect, Pawn animal, List<Pawn> pawns)
         {
@@ -133,26 +163,32 @@ namespace GiddyUpCaravan.Harmony
 
             bool canMount = true;
 
+
+
             if (!animalData.selectedForCaravan)
             {
                 buttonText = "GU_Car_AnimalNotSelected".Translate();
                 canMount = false;
             }
-            if (animal.ageTracker.CurLifeStageIndex != animal.RaceProps.lifeStageAges.Count - 1)
+
+            bool isMountable = IsMountableUtility.isMountable(animal, out IsMountableUtility.Reason reason);
+            if (!isMountable)
             {
-                buttonText = "GU_Car_NotFullyGrown".Translate();
-                canMount = false;
-            }
-            if (!(animal.training != null && animal.training.IsCompleted(TrainableDefOf.Obedience)))
-            {
-                buttonText = "GU_Car_NeedsObedience".Translate();
-                canMount = false;
-            }
-            bool found = GiddyUpCore.Base.animalSelecter.Value.InnerList.TryGetValue(animal.def.defName, out AnimalRecord value);
-            if (found && !value.isSelected)
-            {
-                buttonText = "GU_Car_NotInModOptions".Translate();
-                canMount = false;
+                if (reason == IsMountableUtility.Reason.NotFullyGrown)
+                {
+                    buttonText = "GU_Car_NotFullyGrown".Translate();
+                    canMount = false;
+                }
+                if (reason == IsMountableUtility.Reason.NeedsObedience)
+                {
+                    buttonText = "GU_Car_NeedsObedience".Translate();
+                    canMount = false;
+                }
+                if (reason == IsMountableUtility.Reason.NotInModOptions)
+                {
+                    buttonText = "GU_Car_NotInModOptions".Translate();
+                    canMount = false;
+                }
             }
 
             if (animalData.caravanRider != null)
@@ -218,12 +254,5 @@ namespace GiddyUpCaravan.Harmony
 
     }
 
-    [HarmonyPatch(typeof(TransferableOneWayWidget), "FillMainRect")]
-    static class TransferableOneWayWidget_FillMainRect
-    {
-        static void Postfix(ref bool anythingChanged)
-        {
-            anythingChanged = true;
-        }
-    }
+
 }

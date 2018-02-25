@@ -72,6 +72,7 @@
     <Compile Include="Harmony\Pawn_TicksPerMove.cs" />
     <Compile Include="Harmony\TraderCaravanUtility.cs" />
     <Compile Include="Harmony\TransferableOneWayWidget.cs" />
+    <Compile Include="Harmony\TransferableUtility.cs" />
     <Compile Include="Harmony\WorldRoutePlanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\CaravanUtility.cs" />

@@ -20,7 +20,7 @@ namespace GiddyUpCaravan.Harmony
             {
                 Pawn pawnA = (Pawn)a;
                 Pawn pawnB = (Pawn)b;
-                if(IsMountableUtility.isMountable(pawnA) && IsMountableUtility.isMountable(pawnB)){
+                if(IsMountableUtility.isMountable(pawnA) || IsMountableUtility.isMountable(pawnB)){
                     __result = false;
                 }
             }

@@ -16,6 +16,10 @@ using Verse;
 namespace GiddyUpCaravan.Harmony
 {
 
+
+
+
+
     [HarmonyPatch(typeof(TransferableOneWayWidget), "DoRow")]
     static class TransferableOneWayWidget_DoRow
     {
@@ -57,16 +61,8 @@ namespace GiddyUpCaravan.Harmony
             {
                 return num; //not an animal, return; 
             }
-            /*
-            if (trad.CountToTransfer % 2 == 0)
-            {
-                Traverse.Create(trad).Property("CountToTransfer").SetValue(trad.CountToTransfer + 1);
-            }
-            else
-            {
-                Traverse.Create(trad).Property("CountToTransfer").SetValue(trad.CountToTransfer - 1);
-            }
-            */
+            
+
 
             Rect buttonRect = new Rect(num - buttonWidth, 0f, buttonWidth, rect.height);
 
@@ -96,7 +92,7 @@ namespace GiddyUpCaravan.Harmony
             setSelectedForCaravan(pawn, trad);
             if (pawn.RaceProps.Animal && pawns.Count > 0)
             {
-                handleAnimal(num, buttonRect, pawn, pawns);
+                handleAnimal(num, buttonRect, pawn, pawns, trad);
             }
             else
             {
@@ -106,6 +102,8 @@ namespace GiddyUpCaravan.Harmony
 
             return num - buttonWidth;
         }
+
+
 
         private static void setSelectedForCaravan(Pawn pawn, TransferableOneWay trad)
         {
@@ -152,7 +150,7 @@ namespace GiddyUpCaravan.Harmony
 
 
 
-        private static void handleAnimal(float num, Rect buttonRect, Pawn animal, List<Pawn> pawns)
+        private static void handleAnimal(float num, Rect buttonRect, Pawn animal, List<Pawn> pawns, TransferableOneWay trad)
         {
             ExtendedPawnData animalData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animal);
             Text.Anchor = TextAnchor.MiddleLeft;
@@ -223,7 +221,6 @@ namespace GiddyUpCaravan.Harmony
                         list.Add(new FloatMenuOption(pawn.Name.ToStringShort, delegate
                         {
                             {
-
                                 if (animalData.caravanRider != null)
                                 {
                                     ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
@@ -232,6 +229,8 @@ namespace GiddyUpCaravan.Harmony
 
                                 pawnData.caravanMount = animal;
                                 animalData.caravanRider = pawn;
+                                Traverse.Create(trad).Property("CountToTransfer").SetValue(-1); //Setting this to -1 will make sure total weight is calculated again. it's set back to 1 shortly after
+                                animalData.selectedForCaravan = true;
                             }
                         }, MenuOptionPriority.High, null, null, 0f, null, null));
                     }
@@ -245,6 +244,9 @@ namespace GiddyUpCaravan.Harmony
                             riderData.caravanMount = null;
                         }
                         animalData.caravanRider = null;
+                        Traverse.Create(trad).Property("CountToTransfer").SetValue(-1); //Setting this to -1 will make sure total weight is calculated again. it's set back to 1 shortly after
+                        animalData.selectedForCaravan = true;
+
                     }
                 }, MenuOptionPriority.Low, null, null, 0f, null, null));
                 Find.WindowStack.Add(new FloatMenu(list));
@@ -254,5 +256,49 @@ namespace GiddyUpCaravan.Harmony
 
     }
 
+    
+    //This code makes sure total pack weight is refreshed after a rider is set for an animal. 
+    //CountToTransfer with -1 is used as a flag here, indicating that weight should be recalculated. Unfortunately I couldn't come up with a cleaner way to do this without completely disabling caching. 
+    [HarmonyPatch(typeof(TransferableOneWayWidget), "FillMainRect")]
+    static class TransferableOneWayWidget_FillMainRect
+    {
+        static void Postfix(TransferableOneWayWidget __instance, ref bool anythingChanged)
+        {
+            //Reflection is needed here to access the private struct inside TransferableOneWayWidget
+            Type sectionType = Traverse.Create(__instance).Type("Section").GetValue<Type>();
+            IList sections = Traverse.Create(__instance).Field("sections").GetValue<IList>();
+            foreach (object s in sections)
+            {
+                List<TransferableOneWay> tf = sectionType.GetField("cachedTransferables").GetValue(s) as List<TransferableOneWay>;
+            }
+            if (sections.Count < 3)
+            {
+                return;
+            }
+            object section = sections[2]; //section 2 only yields animals, which are needed in this case
 
+            List<TransferableOneWay> cachedTransferables = sectionType.GetField("cachedTransferables").GetValue(section) as List<TransferableOneWay>;
+
+            if (cachedTransferables != null)
+            {
+                foreach (TransferableOneWay tow in cachedTransferables)
+                {
+                    Pawn towPawn = tow.AnyThing as Pawn;
+                    if (towPawn == null)
+                    {
+                        continue;
+                    }
+                    if (tow.CountToTransfer == -1)
+                    {
+                        ExtendedPawnData PawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(towPawn);
+                        if (PawnData.selectedForCaravan == true)
+                        {
+                            anythingChanged = true;
+                            Traverse.Create(tow).Property("CountToTransfer").SetValue(1); //Setting this will make sure total weight is calculated again. it's set back to 1 shortly after
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

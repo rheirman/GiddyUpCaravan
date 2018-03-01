@@ -20,6 +20,10 @@
   <GU_Car_NonWildWeight_Description>友好的なポーンが訪問してくる際に野生では生息していない動物に騎乗している確率です。
 　合計が100%でない場合、確率は100%に修正されます。</GU_Car_NonWildWeight_Description>
 
+  <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Label>NPC騎乗場を削除</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Label>
+  <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>指定されたNPC騎乗場を削除します。</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>
+  <GU_Car_Designator_GU_DropAnimal_NPC_Expand_Label>NPC騎乗場を設置</GU_Car_Designator_GU_DropAnimal_NPC_Expand_Label>
+  <GU_Car_Designator_GU_DropAnimal_NPC_Expand_Description>NPC向けの騎乗動物を停める場所を設置してください。 トレーダーや訪問者が到着すると、彼らは集合地点に最も近い「NPC騎乗場」に騎乗動物たちを一時的に残します。 乗り手が戻ってくるまで、騎乗動物たちは降りた地点の近くにとどまります。</GU_Car_Designator_GU_DropAnimal_NPC_Expand_Description>
   <!-- note for translators: The following items need to be really short to fit -->
   <GU_Car_No_Rider>騎手が居ない</GU_Car_No_Rider>
   <GU_Car_Set_Rider>騎手を設定</GU_Car_Set_Rider>

@@ -20,7 +20,11 @@
 <GU_Car_NonWildWeight_Title>Шанс не-дикого ездового животного дружелюбного НИПа</GU_Car_NonWildWeight_Title>
 <GU_Car_NonWildWeight_Description>Шанс того, что животное, верхом на котором прибудет дружелюбный НИП, не встречается в дикой природе. 
  Шансы нормализуются до 100% если их сумма не равна 100</GU_Car_NonWildWeight_Description>
-
+ 
+ <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Label>Уменьшить область для ездовых животных</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Label>
+ <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>Уменьшает область для "парковки" ездовых животных НИПов.</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>
+ <GU_Car_Designator_GU_DropAnimal_NPC_Expand_Label>Расширить область для ездовых животных</GU_Car_Designator_GU_DropAnimal_NPC_Expand_Label>
+ <GU_Car_Designator_GU_DropAnimal_NPC_Expand_Description>Укажите места, где НИПы будут оставлять своих ездовых животных. Когда прибудут торговцы или гости, они временно оставят своих ездовых животных в области, ближайшей к точке сбора. Ездовые животные останутся около места спешивания до тех пор, пока наездник не вернётся.</GU_Car_Designator_GU_DropAnimal_NPC_Expand_Description>
  <!-- note for translators: The following items need to be really short to fit -->
  <GU_Car_No_Rider>Нет ездока</GU_Car_No_Rider>
  <GU_Car_Set_Rider>Выбрать ездока</GU_Car_Set_Rider>

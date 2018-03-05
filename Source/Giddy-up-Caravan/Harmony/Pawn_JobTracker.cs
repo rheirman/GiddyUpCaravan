@@ -108,7 +108,7 @@ namespace GiddyUpCaravan.Harmony
             Area_GU areaFound = (Area_GU) pawn.Map.areaManager.GetLabeled(Base.DropAnimal_NPC_LABEL);
             IntVec3 targetLoc = pawn.Position;
 
-            if(areaFound != null)
+            if(areaFound != null && areaFound.ActiveCells.Count() > 0)
             {
                 targetLoc = DistanceUtility.getClosestAreaLoc(pawn, areaFound);
             }

@@ -13,7 +13,7 @@ namespace GiddyUpCaravan.Harmony
     [HarmonyPatch(typeof(TraderCaravanUtility), "GetTraderCaravanRole")]
     static class TraderCaravanUtility_GetTraderCaravanRole
     {
-        static bool Prefix(Pawn p, ref TraderCaravanRole __result)
+        static void Postfix(Pawn p, ref TraderCaravanRole __result)
         {
             //Log.Message("GetTraderCaravanRole called");
             if (p.RaceProps.Animal)
@@ -25,10 +25,8 @@ namespace GiddyUpCaravan.Harmony
                 {
                     //Log.Message("animal master set, setting role to guard");
                     __result = TraderCaravanRole.Guard;
-                    return false;
                 }
             }
-            return true;
         }
     }
 }

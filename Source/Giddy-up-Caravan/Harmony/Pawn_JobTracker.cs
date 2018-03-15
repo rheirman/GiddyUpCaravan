@@ -112,17 +112,23 @@ namespace GiddyUpCaravan.Harmony
             {
                 targetLoc = DistanceUtility.getClosestAreaLoc(pawn, areaFound);
             }
-
-            Job dismountJob = new Job(GUC_JobDefOf.Dismount);
-            dismountJob.count = 1;
-            __instance.jobQueue.EnqueueFirst(dismountJob);
-            __instance.jobQueue.EnqueueFirst(new Job(JobDefOf.Goto, targetLoc));
-            PawnDuty animalDuty = pawnData.mount.mindState.duty;
-            //if(pawnData.mount.GetLord().CurLordToil is LordToil)
-
-            if(animalDuty != null)
+            if (pawn.Map.reachability.CanReach(pawn.Position, targetLoc, PathEndMode.OnCell, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)))
             {
-                animalDuty.focus = new LocalTargetInfo(targetLoc);
+                Job dismountJob = new Job(GUC_JobDefOf.Dismount);
+                dismountJob.count = 1;
+                __instance.jobQueue.EnqueueFirst(dismountJob);
+                __instance.jobQueue.EnqueueFirst(new Job(JobDefOf.Goto, targetLoc));
+                PawnDuty animalDuty = pawnData.mount.mindState.duty;
+                //if(pawnData.mount.GetLord().CurLordToil is LordToil)
+
+                if(animalDuty != null)
+                {
+                    animalDuty.focus = new LocalTargetInfo(targetLoc);
+                }
+            }
+            else
+            {
+                Messages.Message("GU_Car_NotReachable_DropAnimal_NPC_Message".Translate(), new RimWorld.Planet.GlobalTargetInfo(targetLoc, pawn.Map), MessageTypeDefOf.NegativeEvent);
             }
         }
 

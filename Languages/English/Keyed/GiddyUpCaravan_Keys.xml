@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
+<GU_Car_NotReachable_DropAnimal_NPC_Message> Visitor could not reach Giddy-up! NPC Drop off point. Make sure all NPC drop off points are reachable</GU_Car_NotReachable_DropAnimal_NPC_Message>
+
 <GU_Car_CompleteCaravanBonus_Title>All colonists riding bonus</GU_Car_CompleteCaravanBonus_Title>
 <GU_Car_CompleteCaravanBonus_Description>Bonus to caravan movement speed when every colonist in a caravan is riding a mount</GU_Car_CompleteCaravanBonus_Description>
 <GU_Car_incompleteCaravanBonusCap_Title>Not all colonists riding max bonus</GU_Car_incompleteCaravanBonusCap_Title>

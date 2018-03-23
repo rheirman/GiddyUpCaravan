@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
+<GU_Car_NotReachable_DropAnimal_NPC_Message>Besucher konnten den Giddy-up! NSC Reittierplatz nicht erreichen. Stelle sicher, dass alle Reittierplätze erreichbar sind</GU_Car_NotReachable_DropAnimal_NPC_Message>
+
 <GU_Car_CompleteCaravanBonus_Title>Alle Kolonisten beritten - Bonus</GU_Car_CompleteCaravanBonus_Title>
 <GU_Car_CompleteCaravanBonus_Description>Bonus auf die Bewegungsgeschwindigkeit, wenn jeder Kolonist in der Karawane beritten ist.</GU_Car_CompleteCaravanBonus_Description>
 <GU_Car_incompleteCaravanBonusCap_Title>Nicht alle Kolonisten sind beritten - Maximaler Bonus</GU_Car_incompleteCaravanBonusCap_Title>
@@ -21,6 +23,10 @@ Dieser Bonus wird nicht genutzt, wenn alle Kolonisten beritten sind.</GU_Car_inc
 <GU_Car_NonWildWeight_Description>Die Chance, dass die Reittiere der NSC nicht in der Wildnis vorzufinden ist. 
  Chancen werden auf 100% normalisiert, wenn die Summe nicht 100 ergibt.</GU_Car_NonWildWeight_Description>
 
+ <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Label>NSC-Reittierplatz entfernen</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Label>
+ <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>Entferne NSC-Reittierplätze</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>
+ <GU_Car_Designator_GU_DropAnimal_NPC_Expand_Label>NSC-Reittierplatz setzen</GU_Car_Designator_GU_DropAnimal_NPC_Expand_Label>
+ <GU_Car_Designator_GU_DropAnimal_NPC_Expand_Description>Setze den Reittierplatz für NSC-Reittiere. Wenn Händler oder Besucher ankommen, lassen sie ihre Reittiere an dem nächsten Reittierplatz. Reittiere bleiben in der Nähe dieses Platzes, bis der zugehörige Reiter zurückkommt. </GU_Car_Designator_GU_DropAnimal_NPC_Expand_Description>
  <!-- note for translators: The following items need to be really short to fit -->
  <GU_Car_No_Rider>Kein Reiter</GU_Car_No_Rider>
  <GU_Car_Set_Rider>Reiter wählen</GU_Car_Set_Rider>

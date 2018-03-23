@@ -1,22 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
+  <GU_Car_NotReachable_DropAnimal_NPC_Message>人员无法到达坐骑释放区，请确保所有的坐骑释放区都可到达</GU_Car_NotReachable_DropAnimal_NPC_Message>
+
   <GU_Car_CompleteCaravanBonus_Title>所有殖民者骑乘奖励</GU_Car_CompleteCaravanBonus_Title>
   <GU_Car_CompleteCaravanBonus_Description>当所有殖民者都骑乘的时候，远征队的速度也会增加</GU_Car_CompleteCaravanBonus_Description>
   <GU_Car_incompleteCaravanBonusCap_Title>部分殖民者骑乘时最大奖励</GU_Car_incompleteCaravanBonusCap_Title>
   <GU_Car_incompleteCaravanBonusCap_Description>每当一个殖民者骑乘时，提升这个比例的速度，当所有殖民者都骑乘的时候，这个奖励不适用</GU_Car_incompleteCaravanBonusCap_Description>
 
-  <GU_Car_visitorMountChance_Title>友好NPC骑乘几率</GU_Car_visitorMountChance_Title>
-  <GU_Car_visitorMountChance_Description>友好NPC骑乘动物的几率。</GU_Car_visitorMountChance_Description>
+  <GU_Car_visitorMountChance_Title>访客骑乘几率</GU_Car_visitorMountChance_Title>
+  <GU_Car_visitorMountChance_Description>访客骑乘动物的几率。</GU_Car_visitorMountChance_Description>
   <GU_Car_visitorMountChanceTribal_Title>友好的部落人骑乘几率</GU_Car_visitorMountChanceTribal_Title>
   <GU_Car_visitorMountChanceTribal_Description>友好的部落人骑乘动物的几率</GU_Car_visitorMountChanceTribal_Description>
-  <GU_Car_InBiomeWeight_Title>友好NPC的坐骑是该生态动物的几率</GU_Car_InBiomeWeight_Title>
-  <GU_Car_InBiomeWeight_Description>友好NPC动物从全部可乘骑动物中随机筛选的几率</GU_Car_InBiomeWeight_Description>
-  <GU_Car_OutBiomeWeight_Title>友好NPC骑乘随机动物的几率</GU_Car_OutBiomeWeight_Title>
-  <GU_Car_OutBiomeWeight_Description>友好NPC动物从全部可乘骑动物中随机筛选的几率</GU_Car_OutBiomeWeight_Description>
-  <GU_Car_NonWildWeight_Title>友好NPC的坐骑为非野生动物的几率</GU_Car_NonWildWeight_Title>
-  <GU_Car_NonWildWeight_Description>友好NPC的坐骑为非野生动物的几率</GU_Car_NonWildWeight_Description>
+  <GU_Car_InBiomeWeight_Title>访客的坐骑是该生态动物的几率</GU_Car_InBiomeWeight_Title>
+  <GU_Car_InBiomeWeight_Description>访客动物从全部可乘骑动物中随机筛选的几率</GU_Car_InBiomeWeight_Description>
+  <GU_Car_OutBiomeWeight_Title>访客骑乘随机动物的几率</GU_Car_OutBiomeWeight_Title>
+  <GU_Car_OutBiomeWeight_Description>访客动物从全部可乘骑动物中随机筛选的几率</GU_Car_OutBiomeWeight_Description>
+  <GU_Car_NonWildWeight_Title>访客的坐骑为非野生动物的几率</GU_Car_NonWildWeight_Title>
+  <GU_Car_NonWildWeight_Description>访客的坐骑为非野生动物的几率</GU_Car_NonWildWeight_Description>
 
+  <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Label>删除放牧点</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Label>
+  <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>删除指定的除放牧点</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>
+  <GU_Car_Designator_GU_DropAnimal_NPC_Expand_Label>放牧点</GU_Car_Designator_GU_DropAnimal_NPC_Expand_Label>
+  <GU_Car_Designator_GU_DropAnimal_NPC_Expand_Description>访客释放坐骑的位置，当访客或商队到达时，他们可以暂时的把坐骑释放在这里，坐骑将会在这附近溜达。 </GU_Car_Designator_GU_DropAnimal_NPC_Expand_Description>
   <!-- note for translators: The following items need to be really short to fit -->
   <GU_Car_No_Rider>无骑乘者</GU_Car_No_Rider>
   <GU_Car_Set_Rider>设置骑乘者</GU_Car_Set_Rider>

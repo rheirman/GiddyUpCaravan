@@ -45,6 +45,10 @@ namespace GiddyUpCaravan.Harmony
             {            
                 return;
             }
+            if (pawn.IsPrisoner)
+            {
+                return;
+            }
 
             LocalTargetInfo target = DistanceUtility.GetFirstTarget(__result.Job, TargetIndex.A);
             if (!target.IsValid)
@@ -79,7 +83,7 @@ namespace GiddyUpCaravan.Harmony
 
             if (lord.CurLordToil is LordToil_ExitMapAndEscortCarriers || lord.CurLordToil is LordToil_Travel || lord.CurLordToil is LordToil_ExitMap || lord.CurLordToil is LordToil_ExitMapTraderFighting)
             {
-                if (PawnData.owning != null && PawnData.mount == null && !PawnData.owning.Downed && PawnData.owning.Spawned && !pawn.IsBurning() && !pawn.Downed)
+                if (PawnData.owning != null && PawnData.owning.Faction == pawn.Faction && PawnData.mount == null && !PawnData.owning.Downed && PawnData.owning.Spawned && !pawn.IsBurning() && !pawn.Downed)
                 {
                     mountAnimal(__instance, pawn, PawnData, ref __result);
 

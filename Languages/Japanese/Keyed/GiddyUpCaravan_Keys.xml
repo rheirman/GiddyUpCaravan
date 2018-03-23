@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
+  <GU_Car_NotReachable_DropAnimal_NPC_Message>訪問者たちはNPC騎乗場に到達できませんでした。すべてのNPC騎乗場が到達可能か確認してください</GU_Car_NotReachable_DropAnimal_NPC_Message>
+
   <GU_Car_CompleteCaravanBonus_Title>全員騎乗ボーナス</GU_Car_CompleteCaravanBonus_Title>
   <GU_Car_CompleteCaravanBonus_Description>キャラバン隊のすべての入植者が騎乗動物に乗っている際に与えられる、キャラバン隊の移動速度へのボーナスです。</GU_Car_CompleteCaravanBonus_Description>
   <GU_Car_incompleteCaravanBonusCap_Title>全員騎乗でない場合の最大ボーナス</GU_Car_incompleteCaravanBonusCap_Title>

@@ -14,6 +14,7 @@ using Verse;
 
 namespace GiddyUpCaravan.Harmony
 {
+    /*
     [HarmonyPatch(new Type[] { typeof(List<Pawn>) })]
     [HarmonyPatch(typeof(CaravanTicksPerMoveUtility), "GetTicksPerMove")]
     class CaravanTicksPerMoveUtility_GetTicksPerMove
@@ -30,7 +31,7 @@ namespace GiddyUpCaravan.Harmony
 
         static void Postfix(List<Pawn> pawns, ref int __result)
         {
-            __result = Utilities.CaravanUtility.applySpeedBonus(__result, pawns);
+            __result = Mathf.RoundToInt(Utilities.CaravanUtility.applySpeedBonus(__result, pawns));
         }
 
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -78,4 +79,5 @@ namespace GiddyUpCaravan.Harmony
             }
         }
     }
+    */
 }

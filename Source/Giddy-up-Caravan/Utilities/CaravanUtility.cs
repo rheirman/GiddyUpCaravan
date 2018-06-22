@@ -23,7 +23,7 @@ namespace GiddyUpCaravan.Utilities
             return false;
         }
 
-        public static int applySpeedBonus(int ticksPerMove, List<Pawn> pawns)
+        public static float applySpeedBonus(float ticksPerMove, List<Pawn> pawns)
         {
             int pawnsWithMount = 0;
             int pawnsWithoutMount = 0;
@@ -48,7 +48,7 @@ namespace GiddyUpCaravan.Utilities
 
             if (pawnsWithoutMount == 0) //no pawns without mount, apply full speed bonus
             {
-                ticksPerMove = Mathf.RoundToInt(ticksPerMove / ((100f + Base.completeCaravanBonus.Value) / 100));
+                ticksPerMove = ticksPerMove / ((100f + Base.completeCaravanBonus.Value) / 100);
             }
             else //otherwise apply small per mount bonus
             {
@@ -64,35 +64,24 @@ namespace GiddyUpCaravan.Utilities
             return ticksPerMove;
         }
 
-        public static int CostToMove(List<Pawn> pawns, int start, int end, float yearPercent)
+        public static int CostToMove(Caravan caravan, int start, int end, float yearPercent)
         {
 
             //This part makes sure the static tile costs are also decreased by mount usage
-            int tileCost = WorldPathGrid.CalculatedCostAt(end, false, yearPercent);
+            float tileCost = WorldPathGrid.CalculatedMovementDifficultyAt(end, false);
             tileCost = Mathf.RoundToInt((float)tileCost);
 
-            int adjustedTicksPerMove = CaravanTicksPerMoveUtility.GetTicksPerMove(pawns);
-            int result = adjustedTicksPerMove + Utilities.CaravanUtility.applySpeedBonus(tileCost, pawns);
-            result = Mathf.RoundToInt((float)result * Find.WorldGrid.GetRoadMovementMultiplierFast(start, end));
+            int adjustedTicksPerMove = CaravanTicksPerMoveUtility.GetTicksPerMove(caravan);
+
+            int speedBonus = Mathf.RoundToInt(applySpeedBonus(tileCost, caravan.PawnsListForReading));
+            int result = adjustedTicksPerMove + speedBonus;
+            result = Mathf.RoundToInt((float)result * Find.WorldGrid.GetRoadMovementDifficultyMultiplier(start, end));
 
             return result;
         }
 
         //Almost literal copy from vanilla, except Caravan object exposed here. 
         public static int EstimatedTicksToArrive(int from, int to, WorldPath path, float nextTileCostLeft, Caravan caravan, int curTicksAbs)
-        {
-            List<Pawn> pawns = null;
-            if(caravan != null)
-            {
-                pawns = caravan.PawnsListForReading;
-            }
-
-            return EstimatedTicksToArrive(from, to, path, nextTileCostLeft, pawns, curTicksAbs);
-        }
-
-
-
-        public static int EstimatedTicksToArrive(int from, int to, WorldPath path, float nextTileCostLeft, List<Pawn> pawns, int curTicksAbs)
         {
 
             int num = 0;
@@ -138,7 +127,7 @@ namespace GiddyUpCaravan.Utilities
                     {
                         int num10 = curTicksAbs + num;
                         float yearPercent = (float)GenDate.DayOfYear((long)num10, 0f) / 60f;
-                        num9 = (float)Utilities.CaravanUtility.CostToMove(pawns, start, num2, yearPercent); //replaced caravanTicksPerMove with caravan here. 
+                        num9 = (float)Utilities.CaravanUtility.CostToMove(caravan, start, num2, yearPercent); //replaced caravanTicksPerMove with caravan here. 
                     }
                     num6 = Mathf.CeilToInt(num9 / 1f);
                 }

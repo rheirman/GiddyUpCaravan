@@ -11,7 +11,8 @@ using Verse;
 
 namespace GiddyUpCaravan.Harmony
 {
-    [HarmonyPatch(new Type[] { typeof(Caravan), typeof(int), typeof(int), typeof(float) })]
+    /*
+    [HarmonyPatch(new Type[] { typeof(Caravan), typeof(int), typeof(int), typeof(float), typeof(bool), typeof(StringBuilder),typeof(String) })]
     [HarmonyPatch(typeof(Caravan_PathFollower), "CostToMove")]
     class Caravan_PathFollower_CostToMove
     {
@@ -21,7 +22,7 @@ namespace GiddyUpCaravan.Harmony
 
             if(caravan != null)
             {
-                __result = Utilities.CaravanUtility.CostToMove(caravan.PawnsListForReading, start, end, yearPercent);
+                __result = Utilities.CaravanUtility.CostToMove(caravan, start, end, yearPercent);
             }
         }
 
@@ -53,5 +54,6 @@ namespace GiddyUpCaravan.Harmony
             }
         }
     }
+    */
     
 }

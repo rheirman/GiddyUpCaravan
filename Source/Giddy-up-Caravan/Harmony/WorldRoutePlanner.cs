@@ -9,6 +9,7 @@ using Verse;
 
 namespace GiddyUpCaravan.Harmony
 {
+    /*
     [HarmonyPatch(typeof(WorldRoutePlanner), "RecreatePaths")]
     static class WorldRoutePlanner_RecreatePaths
     {
@@ -38,4 +39,5 @@ namespace GiddyUpCaravan.Harmony
             }
         }
     }
+    */
 }

@@ -10,6 +10,7 @@ using Verse;
 namespace GiddyUpCaravan.Harmony
 {
 
+    /*
     [HarmonyPatch(typeof(CaravanArrivalTimeEstimator), "EstimatedTicksToArrive")]
     [HarmonyPatch(new Type[] { typeof(Caravan), typeof(bool)})]
     static class CaravanArrivalTimeEstimator_EstimatedTicksToArrive
@@ -64,4 +65,5 @@ namespace GiddyUpCaravan.Harmony
 
         }
     }
+    */
 }

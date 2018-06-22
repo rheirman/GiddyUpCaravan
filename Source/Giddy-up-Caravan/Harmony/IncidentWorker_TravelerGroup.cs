@@ -23,7 +23,7 @@ namespace GiddyUpCaravan.Harmony
                 if (i > 0 && instructionsList[i - 1].operand == AccessTools.Method(typeof(IncidentWorker_NeutralGroup), "SpawnPawns")) //Identifier for which IL line to inject to
 
                 {
-                    yield return new CodeInstruction(OpCodes.Ldloca_S, 2);//load generated pawns as parameter
+                    yield return new CodeInstruction(OpCodes.Ldloca_S, 3);//load generated pawns as parameter
                     yield return new CodeInstruction(OpCodes.Ldarg_1);//load incidentparms as parameter
                     yield return new CodeInstruction(OpCodes.Call, typeof(VisitorMountUtility).GetMethod("mountAnimals"));//Injected code                                                                                                                         //yield return new CodeInstruction(OpCodes.Stloc_2);
                 }

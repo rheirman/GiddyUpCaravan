@@ -16,7 +16,7 @@ using Verse;
 namespace GiddyUpCaravan.Harmony
 {
 
-    /*
+
 
 
 
@@ -62,8 +62,6 @@ namespace GiddyUpCaravan.Harmony
                 return num; //not an animal, return; 
             }
             
-
-
             Rect buttonRect = new Rect(num - buttonWidth, 0f, buttonWidth, rect.height);
 
 
@@ -230,6 +228,7 @@ namespace GiddyUpCaravan.Harmony
                                 pawnData.caravanMount = animal;
                                 animalData.caravanRider = pawn;
                                 Traverse.Create(trad).Property("CountToTransfer").SetValue(-1); //Setting this to -1 will make sure total weight is calculated again. it's set back to 1 shortly after
+                                Log.Message("setting CountToTransfer to -1");
                                 animalData.selectedForCaravan = true;
                             }
                         }, MenuOptionPriority.High, null, null, 0f, null, null));
@@ -245,6 +244,7 @@ namespace GiddyUpCaravan.Harmony
                         }
                         animalData.caravanRider = null;
                         Traverse.Create(trad).Property("CountToTransfer").SetValue(-1); //Setting this to -1 will make sure total weight is calculated again. it's set back to 1 shortly after
+                        Log.Message("setting CountToTransfer to -1");
                         animalData.selectedForCaravan = true;
 
                     }
@@ -271,19 +271,26 @@ namespace GiddyUpCaravan.Harmony
             {
                 List<TransferableOneWay> tf = sectionType.GetField("cachedTransferables").GetValue(s) as List<TransferableOneWay>;
             }
-            if (sections.Count < 3)
+            Log.Message("sections.count: " + sections.Count);
+            if (sections.Count < 4)
             {
                 return;
             }
-            object section = sections[2]; //section 2 only yields animals, which are needed in this case
+            object section = sections[3]; //section 3 only yields animals, which are needed in this case
 
             List<TransferableOneWay> cachedTransferables = sectionType.GetField("cachedTransferables").GetValue(section) as List<TransferableOneWay>;
 
+            if(cachedTransferables.NullOrEmpty())
+            {
+                Log.Message("cachedTransferables was null or empty");
+            }
             if (cachedTransferables != null)
             {
                 foreach (TransferableOneWay tow in cachedTransferables)
                 {
                     Pawn towPawn = tow.AnyThing as Pawn;
+                    Log.Message("pawn name: " + towPawn.Name + "tow countToTransfer: " + tow.CountToTransfer);
+
                     if (towPawn == null)
                     {
                         continue;
@@ -293,13 +300,13 @@ namespace GiddyUpCaravan.Harmony
                         ExtendedPawnData PawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(towPawn);
                         if (PawnData.selectedForCaravan == true)
                         {
+                            Log.Message("setting countToTransfer back to 1");
                             anythingChanged = true;
-                            Traverse.Create(tow).Property("CountToTransfer").SetValue(1); //Setting this will make sure total weight is calculated again. it's set back to 1 shortly after
+                            Traverse.Create(tow).Property("CountToTransfer").SetValue(1);
                         }
                     }
                 }
             }
         }
     }
-    */
 }

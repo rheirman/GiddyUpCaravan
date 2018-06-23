@@ -27,7 +27,7 @@ namespace GiddyUpCaravan.Harmony
                 }
                 if (instructionsList[i].operand == typeof(CaravanArrivalTimeEstimator).GetMethod("EstimatedTicksToArrive", new Type[] { typeof(int), typeof(int), typeof(WorldPath), typeof(float), typeof(int), typeof(int)}))
                 {
-                    yield return new CodeInstruction(OpCodes.Call, typeof(Utilities.CaravanUtility).GetMethod("EstimatedTicksToArrive", new Type[] { typeof(int), typeof(int), typeof(WorldPath), typeof(float), typeof(Caravan), typeof(int) }));//Injected code     
+                    yield return new CodeInstruction(OpCodes.Call, typeof(Utilities.CaravanUtility).GetMethod("EstimatedTicksToArriveToEvery", new Type[] { typeof(int), typeof(int), typeof(WorldPath), typeof(float), typeof(Caravan), typeof(int) }));//Injected code     
                 }
                 else
                 {
@@ -38,6 +38,8 @@ namespace GiddyUpCaravan.Harmony
 
         }
     }
+    */
+    /*
     [HarmonyPatch(typeof(CaravanArrivalTimeEstimator), "EstimatedTicksToArrive")]
     [HarmonyPatch(new Type[] { typeof(int), typeof(int), typeof(Caravan) })]
     static class CaravanArrivalTimeEstimator_EstimatedTicksToArrive2
@@ -52,9 +54,9 @@ namespace GiddyUpCaravan.Harmony
                 {
                     continue;
                 }
-                if (instructionsList[i].operand == typeof(CaravanArrivalTimeEstimator).GetMethod("EstimatedTicksToArrive", new Type[] { typeof(int), typeof(int), typeof(WorldPath), typeof(float), typeof(int), typeof(int) }))
+                if (instructionsList[i].operand == typeof(CaravanArrivalTimeEstimator).GetMethod("EstimatedTicksToArriveToEvery", new Type[] { typeof(int), typeof(int), typeof(WorldPath), typeof(float), typeof(int), typeof(int) }))
                 {
-                    yield return new CodeInstruction(OpCodes.Call, typeof(Utilities.CaravanUtility).GetMethod("EstimatedTicksToArrive", new Type[] { typeof(int), typeof(int), typeof(WorldPath), typeof(float), typeof(Caravan), typeof(int) }));//Injected code     
+                    yield return new CodeInstruction(OpCodes.Call, typeof(Utilities.CaravanUtility).GetMethod("EstimatedTicksToArriveToEvery", new Type[] { typeof(int), typeof(int), typeof(WorldPath), typeof(float), typeof(Caravan), typeof(int) }));//Injected code     
                 }
                 else
                 {
@@ -66,4 +68,5 @@ namespace GiddyUpCaravan.Harmony
         }
     }
     */
+    
 }

@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
+<GU_Car_Explanation_Speed>Speed with Giddy-up! Caravan</GU_Car_Explanation_Speed>
+<GU_Car_Explanation_EveryoneRiding>Everyone riding!</GU_Car_Explanation_EveryoneRiding>
+<GU_Car_Explanation_Bonus>Bonus</GU_Car_Explanation_Bonus>
+<GU_Car_Explanation_NotEveryoneRiding>Not everyone riding</GU_Car_Explanation_NotEveryoneRiding>
+<GU_Car_Explanation_MaxNotEveryone>Max riders before everyone rides</GU_Car_Explanation_MaxNotEveryone>
+<GU_Car_Explanation_OfTotal>of total colonists</GU_Car_Explanation_OfTotal> <!--No capital here -->
+<GU_Car_Explanation_FractionMax>Fraction of max</GU_Car_Explanation_FractionMax>
+<GU_Car_Explanation_FinalSpeed>Final speed</GU_Car_Explanation_FinalSpeed>
+
 <GU_Car_NotReachable_DropAnimal_NPC_Message> Visitor could not reach Giddy-up! NPC Drop off point. Make sure all NPC drop off points are reachable</GU_Car_NotReachable_DropAnimal_NPC_Message>
 
 <GU_Car_CompleteCaravanBonus_Title>All colonists riding bonus</GU_Car_CompleteCaravanBonus_Title>
@@ -35,6 +44,5 @@ This bonus is not applied when all colonists are riding.</GU_Car_incompleteCarav
  <GU_Car_NeedsObedience>Needs obedience</GU_Car_NeedsObedience>
  <GU_Car_AnimalNotSelected>Not selected</GU_Car_AnimalNotSelected>
  <GU_Car_PawnNotSelected>not selected</GU_Car_PawnNotSelected>
- 
  
 </LanguageData>

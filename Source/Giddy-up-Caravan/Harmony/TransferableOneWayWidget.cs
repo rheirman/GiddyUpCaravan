@@ -271,7 +271,6 @@ namespace GiddyUpCaravan.Harmony
             {
                 List<TransferableOneWay> tf = sectionType.GetField("cachedTransferables").GetValue(s) as List<TransferableOneWay>;
             }
-            Log.Message("sections.count: " + sections.Count);
             if (sections.Count < 4)
             {
                 return;
@@ -279,18 +278,11 @@ namespace GiddyUpCaravan.Harmony
             object section = sections[3]; //section 3 only yields animals, which are needed in this case
 
             List<TransferableOneWay> cachedTransferables = sectionType.GetField("cachedTransferables").GetValue(section) as List<TransferableOneWay>;
-
-            if(cachedTransferables.NullOrEmpty())
-            {
-                Log.Message("cachedTransferables was null or empty");
-            }
             if (cachedTransferables != null)
             {
                 foreach (TransferableOneWay tow in cachedTransferables)
                 {
                     Pawn towPawn = tow.AnyThing as Pawn;
-                    Log.Message("pawn name: " + towPawn.Name + "tow countToTransfer: " + tow.CountToTransfer);
-
                     if (towPawn == null)
                     {
                         continue;
@@ -300,7 +292,6 @@ namespace GiddyUpCaravan.Harmony
                         ExtendedPawnData PawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(towPawn);
                         if (PawnData.selectedForCaravan == true)
                         {
-                            Log.Message("setting countToTransfer back to 1");
                             anythingChanged = true;
                             Traverse.Create(tow).Property("CountToTransfer").SetValue(1);
                         }

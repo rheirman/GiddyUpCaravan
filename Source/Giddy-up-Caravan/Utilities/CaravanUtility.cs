@@ -23,7 +23,7 @@ namespace GiddyUpCaravan.Utilities
             return false;
         }
 
-        public static float applySpeedBonus(float ticksPerMove, List<Pawn> pawns)
+        public static int applySpeedBonus(int ticksPerMove, List<Pawn> pawns, StringBuilder explanation)
         {
             int pawnsWithMount = 0;
             int pawnsWithoutMount = 0;
@@ -45,110 +45,50 @@ namespace GiddyUpCaravan.Utilities
                     pawnsWithoutMount++;
                 }
             }
+            if(pawnsWithMount == 0)
+            {
+                return ticksPerMove;
+            }
+            if(explanation != null)
+            {
+                explanation.AppendLine();
+                explanation.AppendLine();
+                explanation.AppendLine("GU_Car_Explanation_Speed".Translate() + ":");
+            }
 
             if (pawnsWithoutMount == 0) //no pawns without mount, apply full speed bonus
             {
-                ticksPerMove = ticksPerMove / ((100f + Base.completeCaravanBonus.Value) / 100);
+                ticksPerMove = Mathf.RoundToInt(ticksPerMove / ((100f + Base.completeCaravanBonus.Value) / 100));
+                if(explanation != null)
+                {
+
+                    explanation.AppendLine("  " + "GU_Car_Explanation_EveryoneRiding".Translate());
+                    explanation.AppendLine("  " + "GU_Car_Explanation_Bonus".Translate() + ": " + Base.completeCaravanBonus.Value + "%");
+                }
             }
             else //otherwise apply small per mount bonus
             {
-                //Log.Message("pawnsWithoutMount: " + pawnsWithoutMount);
 
                 int total = pawnsWithMount + pawnsWithoutMount;
-                int adjustedTotal = total > 1 ? total - 1 : 1; //adjusted total makes sure incompleteCaravanBonusCap is achievable and prevents div/0. 
-                float isMountedFraction = (float)pawnsWithMount / adjustedTotal;
-                //Log.Message("isMountedFraction: " + isMountedFraction);
-                ticksPerMove = Mathf.RoundToInt(ticksPerMove / ((100f + isMountedFraction * Base.incompleteCaravanBonusCap.Value) / 100f));
+                float bestPossible = total -1; // Best possible for incomplete bonus is that total - 1 pawns are riding
+                float fractionOfBestPossibleAchieved = pawnsWithMount / bestPossible;
+
+                if(explanation != null && pawnsWithMount > 0)
+                {
+                    explanation.AppendLine("  " + "GU_Car_Explanation_NotEveryoneRiding".Translate());
+                    explanation.AppendLine("  " + "GU_Car_Explanation_MaxNotEveryone".Translate() + ": ");
+                    explanation.AppendLine("  " + total + " - 1 = " + bestPossible + " " + "GU_Car_Explanation_OfTotal".Translate());
+                    explanation.AppendLine("  " + "GU_Car_Explanation_FractionMax".Translate() + ": " + pawnsWithMount + " / " + bestPossible + " = " + (fractionOfBestPossibleAchieved).ToString("n2"));
+                    explanation.AppendLine("  " + "GU_Car_Explanation_Bonus".Translate() + ": " + 
+                        Base.incompleteCaravanBonusCap.Value + " * " + 
+                        (fractionOfBestPossibleAchieved).ToString("n2") + " = " + 
+                        (fractionOfBestPossibleAchieved * Base.incompleteCaravanBonusCap.Value).ToString("n1") + "%");
+                }
+                ticksPerMove = Mathf.RoundToInt(ticksPerMove / ((100f + fractionOfBestPossibleAchieved* Base.incompleteCaravanBonusCap.Value) / 100));
 
             }
             return ticksPerMove;
         }
-
-        public static int CostToMove(Caravan caravan, int start, int end, float yearPercent)
-        {
-
-            //This part makes sure the static tile costs are also decreased by mount usage
-            float tileCost = WorldPathGrid.CalculatedMovementDifficultyAt(end, false);
-            tileCost = Mathf.RoundToInt((float)tileCost);
-
-            int adjustedTicksPerMove = CaravanTicksPerMoveUtility.GetTicksPerMove(caravan);
-
-            int speedBonus = Mathf.RoundToInt(applySpeedBonus(tileCost, caravan.PawnsListForReading));
-            int result = adjustedTicksPerMove + speedBonus;
-            result = Mathf.RoundToInt((float)result * Find.WorldGrid.GetRoadMovementDifficultyMultiplier(start, end));
-
-            return result;
-        }
-
-        //Almost literal copy from vanilla, except Caravan object exposed here. 
-        public static int EstimatedTicksToArrive(int from, int to, WorldPath path, float nextTileCostLeft, Caravan caravan, int curTicksAbs)
-        {
-
-            int num = 0;
-            int num2 = from;
-            int num3 = 0;
-            int num4 = Mathf.CeilToInt(20000f) - 1;
-            int num5 = 60000 - num4;
-            int num6 = 0;
-            int num7 = 0;
-            int num8;
-            if (CaravanRestUtility.WouldBeRestingAt(from, (long)curTicksAbs))
-            {
-                num += CaravanRestUtility.LeftRestTicksAt(from, (long)curTicksAbs);
-                num8 = num5;
-            }
-            else
-            {
-                num8 = CaravanRestUtility.LeftNonRestTicksAt(from, (long)curTicksAbs);
-            }
-            while (true)
-            {
-                num7++;
-                if (num7 >= 10000)
-                {
-                    break;
-                }
-                if (num6 <= 0)
-                {
-                    if (num2 == to)
-                    {
-                        return num;
-                    }
-                    bool flag = num3 == 0;
-                    int start = num2;
-                    num2 = path.Peek(num3);
-                    num3++;
-                    float num9;
-                    if (flag)
-                    {
-                        num9 = nextTileCostLeft;
-                    }
-                    else
-                    {
-                        int num10 = curTicksAbs + num;
-                        float yearPercent = (float)GenDate.DayOfYear((long)num10, 0f) / 60f;
-                        num9 = (float)Utilities.CaravanUtility.CostToMove(caravan, start, num2, yearPercent); //replaced caravanTicksPerMove with caravan here. 
-                    }
-                    num6 = Mathf.CeilToInt(num9 / 1f);
-                }
-                if (num8 < num6)
-                {
-                    num += num8;
-                    num6 -= num8;
-                    num += num4;
-                    num8 = num5;
-                }
-                else
-                {
-                    num += num6;
-                    num8 -= num6;
-                    num6 = 0;
-                }
-            }
-            Log.ErrorOnce("Could not calculate estimated ticks to arrive. Too many iterations.", 1837451324);
-            return num;
-        }
-
 
     }
 

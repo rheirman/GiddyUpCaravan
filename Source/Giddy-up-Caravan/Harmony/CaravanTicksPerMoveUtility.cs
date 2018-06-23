@@ -14,26 +14,24 @@ using Verse;
 
 namespace GiddyUpCaravan.Harmony
 {
-    /*
-    [HarmonyPatch(new Type[] { typeof(List<Pawn>) })]
+    
+    [HarmonyPatch(new Type[] { typeof(List<Pawn>), typeof(float), typeof(float), typeof(StringBuilder) })]
     [HarmonyPatch(typeof(CaravanTicksPerMoveUtility), "GetTicksPerMove")]
     class CaravanTicksPerMoveUtility_GetTicksPerMove
     {
-        static bool Prefix(List<Pawn> pawns, ref int __result)
+        //We need to save the caravan pawns here, they are needed when Caravan_PathFollower.CostToMove is called, but the list is unreachable there. Hence we make it reachable by saving it in Base. 
+        static void Prefix(List<Pawn> pawns, ref int __result)
         {
-            if(pawns == null)
+            //Base.Instance.curCaravanPawns = pawns;
+            Base.Instance.curCaravanPawns = new List<Pawn>();
+            foreach(Pawn pawn in pawns)
             {
-                __result = 2500;
-                return false;
+                Base.Instance.curCaravanPawns.Add(pawn);
             }
-            return true;
+            //__result = Mathf.RoundToInt(Utilities.CaravanUtility.applySpeedBonus(__result, pawns)); //apply static speed bonus as defined in the options. 
         }
 
-        static void Postfix(List<Pawn> pawns, ref int __result)
-        {
-            __result = Mathf.RoundToInt(Utilities.CaravanUtility.applySpeedBonus(__result, pawns));
-        }
-
+        // Ensures adjustTicksPermove is called, which makes sure the ticks per move of the animals being mounted are used, and not the ticks per move of the riders themselves 
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var instructionsList = new List<CodeInstruction>(instructions);
@@ -42,7 +40,7 @@ namespace GiddyUpCaravan.Harmony
             {
                 CodeInstruction instruction = instructionsList[i];
                 yield return instruction;
-                if (instructionsList[i].operand == typeof(Pawn).GetMethod("TicksPerMoveCardinal"))
+                if (instructionsList[i].operand == typeof(Pawn).GetMethod("get_TicksPerMoveCardinal"))
                 {
                     flag = true;
                 }
@@ -53,11 +51,13 @@ namespace GiddyUpCaravan.Harmony
                     yield return new CodeInstruction(OpCodes.Ldarg_0);//load Pawns argument
                     yield return new CodeInstruction(OpCodes.Call, typeof(CaravanTicksPerMoveUtility_GetTicksPerMove).GetMethod("adjustTicksPerMove"));//Injected code     
                     yield return new CodeInstruction(OpCodes.Stloc_2);//load num2 local variable
+                    flag = false;
                 }
             }
         }
 
-        public static int adjustTicksPerMove(int num2, int index, List<Pawn> pawns)
+        //makes sure the ticks per move of the animals being mounted are used, and not the ticks per move of the riders themselves 
+        public static float adjustTicksPerMove(float num2, int index, List<Pawn> pawns)
         {
             ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
             if(store == null || pawns == null || pawns.Count == 0 )
@@ -79,5 +79,5 @@ namespace GiddyUpCaravan.Harmony
             }
         }
     }
-    */
+    
 }

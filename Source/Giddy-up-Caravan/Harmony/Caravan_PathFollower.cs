@@ -11,6 +11,22 @@ using Verse;
 
 namespace GiddyUpCaravan.Harmony
 {
+    [HarmonyPatch(new Type[] {typeof(int), typeof(int), typeof(int), typeof(int), typeof(bool), typeof(StringBuilder), typeof(String) })]
+    [HarmonyPatch(typeof(Caravan_PathFollower), "CostToMove")]
+    static class Caravan_PathFollower_CostToMove
+    {
+        static void Postfix(ref int __result, int caravanTicksPerMove, StringBuilder explanation)
+        {
+            int oldResult = __result;
+            __result = Utilities.CaravanUtility.applySpeedBonus(__result, Base.Instance.curCaravanPawns, explanation);
+            if(explanation != null && oldResult != __result)
+            {
+                explanation.AppendLine("  "+ "GU_Car_Explanation_FinalSpeed".Translate() + ": " + (60000f / __result).ToString("n1") + " " + "TilesPerDay".Translate());
+            }
+        }
+    }
+
+
     /*
     [HarmonyPatch(new Type[] { typeof(Caravan), typeof(int), typeof(int), typeof(float), typeof(bool), typeof(StringBuilder),typeof(String) })]
     [HarmonyPatch(typeof(Caravan_PathFollower), "CostToMove")]
@@ -55,5 +71,5 @@ namespace GiddyUpCaravan.Harmony
         }
     }
     */
-    
+
 }

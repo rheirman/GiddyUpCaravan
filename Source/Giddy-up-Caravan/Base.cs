@@ -6,14 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Verse;
+using static RimWorld.Planet.CaravanTicksPerMoveUtility;
 
 namespace GiddyUpCaravan
 {
     public class Base : ModBase
     {
+        internal const string DropAnimal_NPC_LABEL = "GU_Car_Area_GU_DropAnimal_NPC";
+
         internal static SettingHandle<int> completeCaravanBonus;
         internal static SettingHandle<int> incompleteCaravanBonusCap;
-
 
         internal static SettingHandle<int> visitorMountChance;
         internal static SettingHandle<int> visitorMountChanceTribal;
@@ -22,9 +24,16 @@ namespace GiddyUpCaravan
         internal static SettingHandle<int> outBiomeWeight;
         internal static SettingHandle<int> nonWildWeight;
 
+        internal List<Pawn> curCaravanPawns;
+
         private int minPercentage = 0;
         private int maxPercentage = 100;
+        public static Base Instance { get; private set; }
 
+        public Base()
+        {
+            Instance = this;
+        }
         public override string ModIdentifier
         {
             get { return "GiddyUpCaravan"; }
@@ -36,7 +45,7 @@ namespace GiddyUpCaravan
         }
         public override void DefsLoaded()
         {
-            completeCaravanBonus = Settings.GetHandle<int>("completeCaravanBonus", "GU_Car_CompleteCaravanBonus_Title".Translate(), "GU_Car_CompleteCaravanBonus_Description".Translate(), 80, Validators.IntRangeValidator(0, 200));
+            completeCaravanBonus = Settings.GetHandle<int>("completeCaravanBonus", "GU_Car_CompleteCaravanBonus_Title".Translate(), "GU_Car_CompleteCaravanBonus_Description".Translate(), 60, Validators.IntRangeValidator(0, 200));
             incompleteCaravanBonusCap = Settings.GetHandle<int>("incompleteCaravanBonusCap", "GU_Car_incompleteCaravanBonusCap_Title".Translate(), "GU_Car_incompleteCaravanBonusCap_Description".Translate(), 25, Validators.IntRangeValidator(0, 200));
 
             visitorMountChance = Settings.GetHandle<int>("visitorMountChance", "GU_Car_visitorMountChance_Title".Translate(), "GU_Car_visitorMountChance_Description".Translate(), 20, Validators.IntRangeValidator(minPercentage, maxPercentage));

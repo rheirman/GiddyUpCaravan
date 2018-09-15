@@ -14,47 +14,24 @@ using Verse;
 
 namespace GiddyUpCaravan.Harmony
 {
-    [HarmonyPatch(new Type[] { typeof(List<Pawn>) })]
+    
+    [HarmonyPatch(new Type[] { typeof(List<Pawn>), typeof(float), typeof(float), typeof(StringBuilder) })]
     [HarmonyPatch(typeof(CaravanTicksPerMoveUtility), "GetTicksPerMove")]
     class CaravanTicksPerMoveUtility_GetTicksPerMove
     {
-        static void Postfix(List<Pawn> pawns, ref int __result)
+        //We need to save the caravan pawns here, they are needed when Caravan_PathFollower.CostToMove is called, but the list is unreachable there. Hence we make it reachable by saving it in Base. 
+        static void Prefix(List<Pawn> pawns, ref int __result)
         {
-            int pawnsWithMount = 0;
-            int pawnsWithoutMount = 0;
-          
+            //Base.Instance.curCaravanPawns = pawns;
+            Base.Instance.curCaravanPawns = new List<Pawn>();
             foreach(Pawn pawn in pawns)
             {
-                ExtendedPawnData pawndata = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
-                if(pawn.IsColonist && pawn.ridingCaravanMount())
-                {
-                    pawnsWithMount++;
-                }
-                else if (pawn.IsColonist)
-                {
-                    pawnsWithoutMount++;
-                }
+                Base.Instance.curCaravanPawns.Add(pawn);
             }
-            
-            if(pawnsWithoutMount == 0) //no pawns without mount, apply full speed bonus
-            {
-                __result = Mathf.RoundToInt(__result / ((100f + Base.completeCaravanBonus.Value) / 100));
-            }
-            else //otherwise apply small per mount bonus
-            {
-                //Log.Message("pawnsWithoutMount: " + pawnsWithoutMount);
-
-                int total = pawnsWithMount + pawnsWithoutMount;
-                int adjustedTotal = total > 1 ? total- 1 : 1; //adjusted total makes sure incompleteCaravanBonusCap is achievable and prevents div/0. 
-                float isMountedFraction =  (float) pawnsWithMount / adjustedTotal;
-                //Log.Message("isMountedFraction: " + isMountedFraction);
-                __result = Mathf.RoundToInt(__result / ((100f + isMountedFraction * Base.incompleteCaravanBonusCap.Value) / 100f));
-
-            }
-            
-
+            //__result = Mathf.RoundToInt(Utilities.CaravanUtility.applySpeedBonus(__result, pawns)); //apply static speed bonus as defined in the options. 
         }
 
+        // Ensures adjustTicksPermove is called, which makes sure the ticks per move of the animals being mounted are used, and not the ticks per move of the riders themselves 
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var instructionsList = new List<CodeInstruction>(instructions);
@@ -63,7 +40,7 @@ namespace GiddyUpCaravan.Harmony
             {
                 CodeInstruction instruction = instructionsList[i];
                 yield return instruction;
-                if (instructionsList[i].operand == typeof(Pawn).GetMethod("TicksPerMoveCardinal"))
+                if (instructionsList[i].operand == typeof(Pawn).GetMethod("get_TicksPerMoveCardinal"))
                 {
                     flag = true;
                 }
@@ -74,22 +51,33 @@ namespace GiddyUpCaravan.Harmony
                     yield return new CodeInstruction(OpCodes.Ldarg_0);//load Pawns argument
                     yield return new CodeInstruction(OpCodes.Call, typeof(CaravanTicksPerMoveUtility_GetTicksPerMove).GetMethod("adjustTicksPerMove"));//Injected code     
                     yield return new CodeInstruction(OpCodes.Stloc_2);//load num2 local variable
+                    flag = false;
                 }
             }
         }
 
-        public static int adjustTicksPerMove(int num2, int index, List<Pawn> pawns)
+        //makes sure the ticks per move of the animals being mounted are used, and not the ticks per move of the riders themselves 
+        public static float adjustTicksPerMove(float num2, int index, List<Pawn> pawns)
         {
-            Pawn pawn = pawns[index];
-            ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
-            if (pawnData.caravanMount != null && pawn.ridingCaravanMount())
+            ExtendedDataStorage store = GiddyUpCore.Base.Instance.GetExtendedDataStorage();
+            if(store == null || pawns == null || pawns.Count == 0 )
             {
+                return num2;
+            }
+            Pawn pawn = pawns[index];
+
+            ExtendedPawnData pawnData = store.GetExtendedDataFor(pawn);
+            if (pawnData != null && pawnData.caravanMount != null && pawn.ridingCaravanMount())
+            {
+                //Log.Message("Returning adjusted ticks per move: " + "TicsPerMove was: " + num2 + ", but now: " + TicksPerMoveUtility.adjustedTicksPerMove(pawn, pawnData.caravanMount, true));
                 return TicksPerMoveUtility.adjustedTicksPerMove(pawn, pawnData.caravanMount, true);
             }
             else
             {
+                //Log.Message("Returning default ticks per move: " + num2);
                 return num2;
             }
         }
     }
+    
 }

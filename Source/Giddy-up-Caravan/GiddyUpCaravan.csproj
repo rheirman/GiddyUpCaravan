@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\HugsLib18\Assemblies\0Harmony.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\1417078111\Assemblies\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
@@ -44,7 +44,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="HugsLib">
-      <HintPath>..\..\..\HugsLib18\Assemblies\HugsLib.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\1417078111\Assemblies\HugsLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -60,17 +60,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base.cs" />
+    <Compile Include="Harmony\CaravanArrivalTimeEstimator.cs" />
     <Compile Include="Harmony\CaravanTicksPerMoveUtility.cs" />
+    <Compile Include="Harmony\Caravan_PathFollower.cs" />
     <Compile Include="Harmony\IncidentWorker_TraderCaravanArrival.cs" />
     <Compile Include="Harmony\IncidentWorker_TravelerGroup.cs" />
     <Compile Include="Harmony\IncidentWorker_VisitorGroup.cs" />
     <Compile Include="Harmony\Lordtoil_PrepareCaravan_Leave.cs" />
     <Compile Include="Harmony\MassUtility_Capacity.cs" />
+    <Compile Include="Harmony\Pawn_JobTracker.cs" />
     <Compile Include="Harmony\Pawn_TicksPerMove.cs" />
+    <Compile Include="Harmony\TraderCaravanUtility.cs" />
     <Compile Include="Harmony\TransferableOneWayWidget.cs" />
+    <Compile Include="Harmony\TransferableUtility.cs" />
+    <Compile Include="Harmony\WorldRoutePlanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\CaravanUtility.cs" />
     <Compile Include="Utilities\VisitorMountUtility.cs" />
+    <Compile Include="Zones\Designator_GU_DropAnimal_NPC_Clear.cs" />
+    <Compile Include="Zones\Designator_GU_DropAnimal_NPC_Expand.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

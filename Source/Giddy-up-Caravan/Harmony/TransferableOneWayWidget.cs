@@ -1,5 +1,6 @@
 ﻿using GiddyUpCore;
 using GiddyUpCore.Storage;
+using GiddyUpCore.Utilities;
 using Harmony;
 using RimWorld;
 using System;
@@ -14,6 +15,11 @@ using Verse;
 
 namespace GiddyUpCaravan.Harmony
 {
+
+
+
+
+
     [HarmonyPatch(typeof(TransferableOneWayWidget), "DoRow")]
     static class TransferableOneWayWidget_DoRow
     {
@@ -55,7 +61,7 @@ namespace GiddyUpCaravan.Harmony
             {
                 return num; //not an animal, return; 
             }
-
+            
             Rect buttonRect = new Rect(num - buttonWidth, 0f, buttonWidth, rect.height);
 
 
@@ -79,13 +85,12 @@ namespace GiddyUpCaravan.Harmony
                         pawns.Add(tow.AnyThing as Pawn);
                     }
                 }
-                //pawns = TransferableUtility.GetPawnsFromTransferables(cachedTransferables);
                 //It quacks like a duck, so it is one!
             }
             setSelectedForCaravan(pawn, trad);
             if (pawn.RaceProps.Animal && pawns.Count > 0)
             {
-                handleAnimal(num, buttonRect, pawn, pawns);
+                handleAnimal(num, buttonRect, pawn, pawns, trad);
             }
             else
             {
@@ -96,28 +101,54 @@ namespace GiddyUpCaravan.Harmony
             return num - buttonWidth;
         }
 
+
+
         private static void setSelectedForCaravan(Pawn pawn, TransferableOneWay trad)
         {
 
             ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
 
-            if (trad.CountToTransfer == 0)
+            if (trad.CountToTransfer == 0) //unset pawndata when pawn is not selected for caravan. 
             {
                 pawnData.selectedForCaravan = false;
                 if (pawnData.caravanMount != null)
                 {
-                    ExtendedPawnData mountData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawnData.caravanMount);
-                    mountData.caravanRider = null;
-                    pawnData.caravanMount = null;
+                    unsetDataForRider(pawnData);
+                }
+                if (pawnData.caravanRider != null)
+                {
+                    unsetDataForMount(pawnData);
                 }
             }
-            else
+            if(pawnData.caravanMount != null && (pawnData.caravanMount.Dead || pawnData.caravanMount.Downed))
+            {
+                unsetDataForRider(pawnData);
+            }
+
+            if (trad.CountToTransfer > 0)
             {
                 pawnData.selectedForCaravan = true;
             }
         }
 
-        private static void handleAnimal(float num, Rect buttonRect, Pawn animal, List<Pawn> pawns)
+        private static void unsetDataForRider(ExtendedPawnData pawnData)
+        {
+            ExtendedPawnData mountData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawnData.caravanMount);
+            mountData.caravanRider = null;
+            pawnData.caravanMount = null;
+        }
+
+        private static void unsetDataForMount(ExtendedPawnData pawnData)
+        {
+            ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawnData.caravanRider);
+            riderData.caravanMount = null;
+            pawnData.caravanRider = null;
+        }
+
+
+
+
+        private static void handleAnimal(float num, Rect buttonRect, Pawn animal, List<Pawn> pawns, TransferableOneWay trad)
         {
             ExtendedPawnData animalData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animal);
             Text.Anchor = TextAnchor.MiddleLeft;
@@ -128,26 +159,32 @@ namespace GiddyUpCaravan.Harmony
 
             bool canMount = true;
 
+
+
             if (!animalData.selectedForCaravan)
             {
                 buttonText = "GU_Car_AnimalNotSelected".Translate();
                 canMount = false;
             }
-            if (animal.ageTracker.CurLifeStageIndex != animal.RaceProps.lifeStageAges.Count - 1)
+
+            bool isMountable = IsMountableUtility.isMountable(animal, out IsMountableUtility.Reason reason);
+            if (!isMountable)
             {
-                buttonText = "GU_Car_NotFullyGrown".Translate();
-                canMount = false;
-            }
-            if (!(animal.training != null && animal.training.IsCompleted(TrainableDefOf.Obedience)))
-            {
-                buttonText = "GU_Car_NeedsObedience".Translate();
-                canMount = false;
-            }
-            bool found = GiddyUpCore.Base.animalSelecter.Value.InnerList.TryGetValue(animal.def.defName, out AnimalRecord value);
-            if (found && !value.isSelected)
-            {
-                buttonText = "GU_Car_NotInModOptions".Translate();
-                canMount = false;
+                if (reason == IsMountableUtility.Reason.NotFullyGrown)
+                {
+                    buttonText = "GU_Car_NotFullyGrown".Translate();
+                    canMount = false;
+                }
+                if (reason == IsMountableUtility.Reason.NeedsObedience)
+                {
+                    buttonText = "GU_Car_NeedsObedience".Translate();
+                    canMount = false;
+                }
+                if (reason == IsMountableUtility.Reason.NotInModOptions)
+                {
+                    buttonText = "GU_Car_NotInModOptions".Translate();
+                    canMount = false;
+                }
             }
 
             if (animalData.caravanRider != null)
@@ -171,7 +208,6 @@ namespace GiddyUpCaravan.Harmony
                         ExtendedPawnData pawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
                         if (!pawnData.selectedForCaravan)
                         {
-                            //Log.Message("pawnData.caravanMount is not selected for caravan, continue" + pawn.Label);
                             list.Add(new FloatMenuOption(pawn.Name.ToStringShort + " (" + "GU_Car_PawnNotSelected".Translate() + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null));
                             continue;
                         }
@@ -183,7 +219,6 @@ namespace GiddyUpCaravan.Harmony
                         list.Add(new FloatMenuOption(pawn.Name.ToStringShort, delegate
                         {
                             {
-
                                 if (animalData.caravanRider != null)
                                 {
                                     ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
@@ -192,6 +227,9 @@ namespace GiddyUpCaravan.Harmony
 
                                 pawnData.caravanMount = animal;
                                 animalData.caravanRider = pawn;
+                                Traverse.Create(trad).Property("CountToTransfer").SetValue(-1); //Setting this to -1 will make sure total weight is calculated again. it's set back to 1 shortly after
+                                Log.Message("setting CountToTransfer to -1");
+                                animalData.selectedForCaravan = true;
                             }
                         }, MenuOptionPriority.High, null, null, 0f, null, null));
                     }
@@ -205,6 +243,10 @@ namespace GiddyUpCaravan.Harmony
                             riderData.caravanMount = null;
                         }
                         animalData.caravanRider = null;
+                        Traverse.Create(trad).Property("CountToTransfer").SetValue(-1); //Setting this to -1 will make sure total weight is calculated again. it's set back to 1 shortly after
+                        Log.Message("setting CountToTransfer to -1");
+                        animalData.selectedForCaravan = true;
+
                     }
                 }, MenuOptionPriority.Low, null, null, 0f, null, null));
                 Find.WindowStack.Add(new FloatMenu(list));
@@ -214,12 +256,48 @@ namespace GiddyUpCaravan.Harmony
 
     }
 
+    
+    //This code makes sure total pack weight is refreshed after a rider is set for an animal. 
+    //CountToTransfer with -1 is used as a flag here, indicating that weight should be recalculated. Unfortunately I couldn't come up with a cleaner way to do this without completely disabling caching. 
     [HarmonyPatch(typeof(TransferableOneWayWidget), "FillMainRect")]
     static class TransferableOneWayWidget_FillMainRect
     {
-        static void Postfix(ref bool anythingChanged)
+        static void Postfix(TransferableOneWayWidget __instance, ref bool anythingChanged)
         {
-            anythingChanged = true;
+            //Reflection is needed here to access the private struct inside TransferableOneWayWidget
+            Type sectionType = Traverse.Create(__instance).Type("Section").GetValue<Type>();
+            IList sections = Traverse.Create(__instance).Field("sections").GetValue<IList>();
+            foreach (object s in sections)
+            {
+                List<TransferableOneWay> tf = sectionType.GetField("cachedTransferables").GetValue(s) as List<TransferableOneWay>;
+            }
+            if (sections.Count < 4)
+            {
+                return;
+            }
+            object section = sections[3]; //section 3 only yields animals, which are needed in this case
+
+            List<TransferableOneWay> cachedTransferables = sectionType.GetField("cachedTransferables").GetValue(section) as List<TransferableOneWay>;
+            if (cachedTransferables != null)
+            {
+                foreach (TransferableOneWay tow in cachedTransferables)
+                {
+                    Pawn towPawn = tow.AnyThing as Pawn;
+                    if (towPawn == null)
+                    {
+                        continue;
+                    }
+                    if (tow.CountToTransfer == -1)
+                    {
+                        ExtendedPawnData PawnData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(towPawn);
+                        if (PawnData.selectedForCaravan == true)
+                        {
+                            anythingChanged = true;
+                            Traverse.Create(tow).Property("CountToTransfer").SetValue(1);
+                        }
+                    }
+                }
+            }
         }
     }
 }

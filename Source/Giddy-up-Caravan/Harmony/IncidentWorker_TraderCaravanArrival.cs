@@ -1,4 +1,5 @@
 ﻿using GiddyUpCaravan.Utilities;
+using GiddyUpCore.Utilities;
 using Harmony;
 using RimWorld;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
+using Verse;
 
 namespace GiddyUpCaravan.Harmony
 {
@@ -18,17 +20,28 @@ namespace GiddyUpCaravan.Harmony
             for (var i = 0; i < instructionsList.Count; i++)
             {
                 CodeInstruction instruction = instructionsList[i];
-                yield return instruction;
 
-                if (i > 0 && instructionsList[i - 1].operand == AccessTools.Method(typeof(IncidentWorker_NeutralGroup), "SpawnPawns")) //Identifier for which IL line to inject to
+                if (instruction.operand == AccessTools.Method(typeof(IncidentWorker_NeutralGroup), "SpawnPawns")) //Identifier for which IL line to inject to
+
                 {
-                    yield return new CodeInstruction(OpCodes.Ldloca_S, 1);//load generated pawns as parameter
-                    yield return new CodeInstruction(OpCodes.Ldarg_1);//load incidentparms as parameter
-                    yield return new CodeInstruction(OpCodes.Call, typeof(VisitorMountUtility).GetMethod("mountAnimals"));//Injected code                                                                                                                         //yield return new CodeInstruction(OpCodes.Stloc_2);
+                    yield return new CodeInstruction(OpCodes.Call, typeof(IncidentWorker_TraderCaravanArrival_TryExecuteWorker).GetMethod("MountAnimals"));//Injected code                                                                                                                         //yield return new CodeInstruction(OpCodes.Stloc_2);
+                }
+                else
+                {
+                    yield return instruction;
                 }
 
             }
 
+        }
+        public static List<Pawn> MountAnimals(IncidentWorker_TraderCaravanArrival instance, IncidentParms parms)
+        {
+            List<Pawn> pawns = Traverse.Create(instance).Method("SpawnPawns", new object[] { parms }).GetValue<List<Pawn>>();
+            if (!pawns.NullOrEmpty())
+            {
+                NPCMountUtility.generateMounts(ref pawns, parms, Base.inBiomeWeight, Base.outBiomeWeight, Base.nonWildWeight, Base.visitorMountChance, Base.visitorMountChanceTribal);
+            }
+            return pawns;
         }
     }
 }

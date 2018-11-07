@@ -1,6 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
+  <GU_Car_Explanation_Speed>速度 (骑乘!商队)</GU_Car_Explanation_Speed>
+  <GU_Car_Explanation_EveryoneRiding>所有人骑乘!</GU_Car_Explanation_EveryoneRiding>
+  <GU_Car_Explanation_Bonus>加成</GU_Car_Explanation_Bonus>
+  <GU_Car_Explanation_NotEveryoneRiding>并非所有人骑乘...</GU_Car_Explanation_NotEveryoneRiding>
+  <GU_Car_Explanation_MaxNotEveryone>非所有人骑乘时最大速度被限制</GU_Car_Explanation_MaxNotEveryone>
+  <GU_Car_Explanation_OfTotal>殖民者总数</GU_Car_Explanation_OfTotal>  <!--No capital here -->
+  <GU_Car_Explanation_FractionMax>最大加成</GU_Car_Explanation_FractionMax>
+  <GU_Car_Explanation_FinalSpeed>最后的速度</GU_Car_Explanation_FinalSpeed>
+
   <GU_Car_NotReachable_DropAnimal_NPC_Message>人员无法到达坐骑释放区，请确保所有的坐骑释放区都可到达</GU_Car_NotReachable_DropAnimal_NPC_Message>
 
   <GU_Car_CompleteCaravanBonus_Title>所有殖民者骑乘奖励</GU_Car_CompleteCaravanBonus_Title>
@@ -31,6 +40,5 @@
   <GU_Car_NeedsObedience>需要训练顺从</GU_Car_NeedsObedience>
   <GU_Car_AnimalNotSelected>未选择</GU_Car_AnimalNotSelected>
   <GU_Car_PawnNotSelected>未选择殖民者</GU_Car_PawnNotSelected>
-
 
 </LanguageData>

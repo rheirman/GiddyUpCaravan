@@ -6,7 +6,7 @@
   <GU_Car_Explanation_Bonus>加成</GU_Car_Explanation_Bonus>
   <GU_Car_Explanation_NotEveryoneRiding>并非所有人骑乘...</GU_Car_Explanation_NotEveryoneRiding>
   <GU_Car_Explanation_MaxNotEveryone>非所有人骑乘时最大速度被限制</GU_Car_Explanation_MaxNotEveryone>
-  <GU_Car_Explanation_OfTotal>殖民者总数</GU_Car_Explanation_OfTotal>  <!--No capital here -->
+  <GU_Car_Explanation_OfTotal>殖民者总数</GU_Car_Explanation_OfTotal>
   <GU_Car_Explanation_FractionMax>最大加成</GU_Car_Explanation_FractionMax>
   <GU_Car_Explanation_FinalSpeed>最后的速度</GU_Car_Explanation_FinalSpeed>
 
@@ -32,7 +32,6 @@
   <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>删除指定的除放牧点</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>
   <GU_Car_Designator_GU_DropAnimal_NPC_Expand_Label>放牧点</GU_Car_Designator_GU_DropAnimal_NPC_Expand_Label>
   <GU_Car_Designator_GU_DropAnimal_NPC_Expand_Description>访客释放坐骑的位置，当访客或商队到达时，他们可以暂时的把坐骑释放在这里，坐骑将会在这附近溜达。 </GU_Car_Designator_GU_DropAnimal_NPC_Expand_Description>
-  <!-- note for translators: The following items need to be really short to fit -->
   <GU_Car_No_Rider>无骑乘者</GU_Car_No_Rider>
   <GU_Car_Set_Rider>设置骑乘者</GU_Car_Set_Rider>
   <GU_Car_NotInModOptions>动物未设置为可骑乘</GU_Car_NotInModOptions>

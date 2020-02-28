@@ -31,30 +31,6 @@ namespace GiddyUpCaravan.Harmony
             //__result = Mathf.RoundToInt(Utilities.CaravanUtility.applySpeedBonus(__result, pawns)); //apply static speed bonus as defined in the options. 
         }
 
-        // Ensures adjustTicksPermove is called, which makes sure the ticks per move of the animals being mounted are used, and not the ticks per move of the riders themselves 
-        static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            var instructionsList = new List<CodeInstruction>(instructions);
-            bool flag = false;
-            for (var i = 0; i < instructionsList.Count; i++)
-            {
-                CodeInstruction instruction = instructionsList[i];
-                yield return instruction;
-                if (instructionsList[i].operand == typeof(Pawn).GetMethod("get_TicksPerMoveCardinal"))
-                {
-                    flag = true;
-                }
-                if(flag && instructionsList[i].opcode == OpCodes.Stloc_2)
-                {
-                    yield return new CodeInstruction(OpCodes.Ldloc_2);//load num2 local variable
-                    yield return new CodeInstruction(OpCodes.Ldloc_1);//load i local variable
-                    yield return new CodeInstruction(OpCodes.Ldarg_0);//load Pawns argument
-                    yield return new CodeInstruction(OpCodes.Call, typeof(CaravanTicksPerMoveUtility_GetTicksPerMove).GetMethod("adjustTicksPerMove"));//Injected code     
-                    yield return new CodeInstruction(OpCodes.Stloc_2);//load num2 local variable
-                    flag = false;
-                }
-            }
-        }
 
         //makes sure the ticks per move of the animals being mounted are used, and not the ticks per move of the riders themselves 
         public static float adjustTicksPerMove(float num2, int index, List<Pawn> pawns)

@@ -19,7 +19,10 @@
       </li>
      
     </modDependencies>
-	
+    <loadAfter>
+	  <li>UnlimitedHugs.HugsLib</li>
+      <li>roolo.giddyupcore</li>
+    </loadAfter>
 		<packageId>roolo.giddyupcaravan</packageId>
 	<description>Let your colonists ride to far lands on elephants, muffalos, llamas or any other animal, modded or not! 
 	

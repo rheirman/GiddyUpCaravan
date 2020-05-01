@@ -27,7 +27,20 @@ namespace GiddyUpCaravan.Harmony
             }
             else
             {
-                __result -= pawnData.caravanRider.GetStatValue(StatDefOf.Mass);
+                //new solution A - more forgiving
+                //float riderTotalMass = pawnData.caravanRider.GetStatValue(StatDefOf.Mass);
+                //float riderGearInvMass = MassUtility.GearAndInventoryMass(pawnData.caravanRider);
+                //float riderBodyMass = riderTotalMass - riderGearInvMass;
+                //__result -= riderBodyMass;
+                //__result = Math.Max(__result, 0f);
+
+                //new solution B - more restrictive
+                float riderTotalMass = pawnData.caravanRider.GetStatValue(StatDefOf.Mass);
+                float riderGearInvMass = MassUtility.GearAndInventoryMass(pawnData.caravanRider);
+                float riderBodyMass = riderTotalMass - riderGearInvMass;
+                float riderCapacity = MassUtility.Capacity(pawnData.caravanRider);
+                float riderGrossMass = riderBodyMass + riderCapacity;
+                __result -= riderGrossMass;
                 __result = Math.Max(__result, 0f);
             }
         }

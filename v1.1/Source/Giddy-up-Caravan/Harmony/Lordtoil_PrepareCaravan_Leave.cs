@@ -49,10 +49,11 @@ namespace GiddyUpCaravan.Harmony
                     shouldAddOwnedPawns.Add(pawnData.caravanMount);
                 }
             }
+            var exitSpot = Traverse.Create(__instance).Field("exitSpot").GetValue<IntVec3>();
             foreach (Pawn pawn in shouldAddOwnedPawns)
             {
                 __instance.lord.ownedPawns.Add(pawn);
-                pawn.mindState.duty = new PawnDuty(DutyDefOf.TravelOrWait, Traverse.Create(__instance).Field("exitSpot").GetValue<IntVec3>());
+                pawn.mindState.duty = new PawnDuty(DutyDefOf.TravelOrWait, exitSpot);
             }
         }
     }

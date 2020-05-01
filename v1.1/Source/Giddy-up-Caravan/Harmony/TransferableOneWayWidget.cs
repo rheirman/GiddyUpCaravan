@@ -12,6 +12,7 @@ using System.Reflection.Emit;
 using System.Text;
 using UnityEngine;
 using Verse;
+using Multiplayer.API;
 
 namespace GiddyUpCaravan.Harmony
 {
@@ -219,17 +220,20 @@ namespace GiddyUpCaravan.Harmony
                         list.Add(new FloatMenuOption(pawn.Name.ToStringShort, delegate
                         {
                             {
-                                if (animalData.caravanRider != null)
-                                {
-                                    ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
-                                    riderData.caravanMount = null;
-                                }
-
-                                pawnData.caravanMount = animal;
-                                animalData.caravanRider = pawn;
+                                SelectMountRider(animalData, pawnData, animal, pawn);
                                 Traverse.Create(trad).Property("CountToTransfer").SetValue(-1); //Setting this to -1 will make sure total weight is calculated again. it's set back to 1 shortly after
                                 Log.Message("setting CountToTransfer to -1");
-                                animalData.selectedForCaravan = true;
+                                //if (animalData.caravanRider != null)
+                                //{
+                                //    ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
+                                //    riderData.caravanMount = null;
+                                //}
+
+                                //pawnData.caravanMount = animal;
+                                //animalData.caravanRider = pawn;
+                                //Traverse.Create(trad).Property("CountToTransfer").SetValue(-1); //Setting this to -1 will make sure total weight is calculated again. it's set back to 1 shortly after
+                                //Log.Message("setting CountToTransfer to -1");
+                                //animalData.selectedForCaravan = true;
                             }
                         }, MenuOptionPriority.High, null, null, 0f, null, null));
                     }
@@ -237,22 +241,51 @@ namespace GiddyUpCaravan.Harmony
                 list.Add(new FloatMenuOption("GU_Car_No_Rider".Translate(), delegate
                 {
                     {
-                        if (animalData.caravanRider != null)
-                        {
-                            ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
-                            riderData.caravanMount = null;
-                        }
-                        animalData.caravanRider = null;
+                        ClearMountRider(animalData);
                         Traverse.Create(trad).Property("CountToTransfer").SetValue(-1); //Setting this to -1 will make sure total weight is calculated again. it's set back to 1 shortly after
                         Log.Message("setting CountToTransfer to -1");
-                        animalData.selectedForCaravan = true;
-
+                        //if (animalData.caravanRider != null)
+                        //{
+                        //    ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
+                        //    riderData.caravanMount = null;
+                        //}
+                        //animalData.caravanRider = null;
+                        //Traverse.Create(trad).Property("CountToTransfer").SetValue(-1); //Setting this to -1 will make sure total weight is calculated again. it's set back to 1 shortly after
+                        //Log.Message("setting CountToTransfer to -1");
+                        //animalData.selectedForCaravan = true;
                     }
                 }, MenuOptionPriority.Low, null, null, 0f, null, null));
                 Find.WindowStack.Add(new FloatMenu(list));
             }
         }
 
+        [SyncMethod]
+        private static void SelectMountRider(ExtendedPawnData animalData, ExtendedPawnData pawnData, Pawn animal, Pawn pawn)
+        {
+            if (animalData.caravanRider != null)
+            {
+                ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
+                riderData.caravanMount = null;
+            }
+
+            pawnData.caravanMount = animal;
+            animalData.caravanRider = pawn;
+
+            animalData.selectedForCaravan = true;
+        }
+
+        [SyncMethod]
+        private static void ClearMountRider(ExtendedPawnData animalData)
+        {
+            if (animalData.caravanRider != null)
+            {
+                ExtendedPawnData riderData = GiddyUpCore.Base.Instance.GetExtendedDataStorage().GetExtendedDataFor(animalData.caravanRider);
+                riderData.caravanMount = null;
+            }
+            animalData.caravanRider = null;
+
+            animalData.selectedForCaravan = true;
+        }
 
     }
 

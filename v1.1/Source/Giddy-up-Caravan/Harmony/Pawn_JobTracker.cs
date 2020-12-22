@@ -38,13 +38,16 @@ namespace GiddyUpCaravan.Harmony
                 }
 
             }
-
-
-            if (___pawn.IsColonistPlayerControlled || ___pawn.RaceProps.Animal || ___pawn.Faction.HostileTo(Faction.OfPlayer))
+            //Check if pawn is enemy and can mount.
+            if (___pawn.IsColonistPlayerControlled || ___pawn.IsBorrowedByAnyFaction() || ___pawn.RaceProps.Animal || ___pawn.Faction.HostileTo(Faction.OfPlayer) || !___pawn.RaceProps.Humanlike)
             {            
                 return;
             }
             if (___pawn.IsPrisoner)
+            {
+                return;
+            }
+            if(__result.Job == null) //shouldn't happen, but may happen with mods.
             {
                 return;
             }
@@ -82,7 +85,13 @@ namespace GiddyUpCaravan.Harmony
 
             if (lord.CurLordToil is LordToil_ExitMapAndEscortCarriers || lord.CurLordToil is LordToil_Travel || lord.CurLordToil is LordToil_ExitMap || lord.CurLordToil is LordToil_ExitMapTraderFighting)
             {
-                if (PawnData.owning != null && PawnData.owning.Faction == ___pawn.Faction && PawnData.mount == null && !PawnData.owning.Downed && PawnData.owning.Spawned && !___pawn.IsBurning() && !___pawn.Downed)
+                if (PawnData.owning != null &&
+                    PawnData.owning.Faction == ___pawn.Faction &&
+                    PawnData.mount == null && 
+                    !PawnData.owning.Downed &&
+                    PawnData.owning.Spawned && 
+                    !___pawn.IsBurning() &&
+                    !___pawn.Downed)
                 {
                     mountAnimal(__instance, ___pawn, PawnData, ref __result);
 

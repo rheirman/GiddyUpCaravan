@@ -36,6 +36,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Remove="Harmony\GiddyUpCore\**" />
+    <None Remove="Harmony\GiddyUpCore\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="0MultiplayerAPI">
       <HintPath>packages\0MultiplayerAPI.dll</HintPath>
     </Reference>
@@ -53,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base.cs" />
+    <Compile Include="Harmony\AnimalPenUtility.cs" />
     <Compile Include="Harmony\CaravanArrivalTimeEstimator.cs" />
     <Compile Include="Harmony\CaravanRideableUtility.cs" />
     <Compile Include="Harmony\CaravanTicksPerMoveUtility.cs" />
@@ -90,7 +95,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Harmony\GiddyUpCore\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <Target Name="MyCode" BeforeTargets="UpdateReferences">

@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{410AAB1A-90ED-4B8C-8263-0E55D5D35B23}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GiddyUpCaravan</RootNamespace>
+    <AssemblyName>GiddyUpCaravan</AssemblyName>
+    <TargetFramework>net472</TargetFramework>
+    <FileAlignment>512</FileAlignment>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Harmony\GiddyUpCore\**" />
+    <None Remove="Harmony\GiddyUpCore\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="0MultiplayerAPI">
+      <HintPath>packages\0MultiplayerAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="GiddyUpCore">
+      <HintPath>..\..\..\..\GiddyUpCore\1.4\Assemblies\GiddyUpCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base.cs" />
+    <Compile Include="Harmony\AnimalPenUtility.cs" />
+    <Compile Include="Harmony\CaravanArrivalTimeEstimator.cs" />
+    <Compile Include="Harmony\CaravanRideableUtility.cs" />
+    <Compile Include="Harmony\CaravanTicksPerMoveUtility.cs" />
+    <Compile Include="Harmony\Caravan_PathFollower.cs" />
+    <Compile Include="Harmony\IncidentWorker_TraderCaravanArrival.cs" />
+    <Compile Include="Harmony\IncidentWorker_TravelerGroup.cs" />
+    <Compile Include="Harmony\IncidentWorker_VisitorGroup.cs" />
+    <Compile Include="Harmony\Lordtoil_PrepareCaravan_Leave.cs" />
+    <Compile Include="Harmony\MassUtility_Capacity.cs" />
+    <Compile Include="Harmony\Pawn_JobTracker.cs" />
+    <Compile Include="Harmony\Pawn_TicksPerMove.cs" />
+    <Compile Include="Harmony\TraderCaravanUtility.cs" />
+    <Compile Include="Harmony\TransferableOneWayWidget.cs" />
+    <Compile Include="Harmony\TransferableUtility.cs" />
+    <Compile Include="Harmony\WorldRoutePlanner.cs" />
+    <Compile Include="ModExtensions\MultiplayerPatch.cs" />
+    <Compile Include="Utilities\CaravanUtility.cs" />
+    <Compile Include="Zones\Designator_GU_DropAnimal_NPC_Clear.cs" />
+    <Compile Include="Zones\Designator_GU_DropAnimal_NPC_Expand.cs" />
+  </ItemGroup>
+ <ItemGroup>
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.4.3531" />
+    <PackageReference Include="Lib.Harmony">
+      <Version>2.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="TaskPubliciser">
+      <Version>1.0.3</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib">
+      <Version>10.0.1</Version>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Target Name="MyCode" BeforeTargets="UpdateReferences">
+    <PropertyGroup>
+      <AssemblyCSharp>$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll</AssemblyCSharp>
+      <PubliciseOutputPath>$(PkgKrafs_Rimworld_Ref)\ref\net472\</PubliciseOutputPath>
+      <AssemblyCSharp_Publicised>$(PubliciseOutputPath)Assembly-CSharp_publicised.dll</AssemblyCSharp_Publicised>
+    </PropertyGroup>
+    <Publicise TargetAssemblyPath="$(AssemblyCSharp)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(AssemblyCSharp)')" />
+    <ItemGroup>
+      <Reference Include="$(AssemblyCSharp_Publicised)">
+        <SpecificVersion>false</SpecificVersion>
+        <HintPath>$(AssemblyCSharp_Publicised)</HintPath>
+        <Implicit>true</Implicit>
+        <Private>false</Private>
+      </Reference>
+    </ItemGroup>
+  </Target>
+  <Target Name="UpdateReferences" AfterTargets="ResolveLockFileReferences">
+    <ItemGroup>
+      <Reference Remove="$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll" />
+    </ItemGroup>
+  </Target>
+</Project>

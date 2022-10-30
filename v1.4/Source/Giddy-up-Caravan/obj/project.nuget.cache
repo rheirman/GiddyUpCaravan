@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "dgSpecHash": "NPQyGHTK7PIUUfPf75QpfOU2gRM3Nine/iLExvFHv5FM/1zxxo0KeUqrqqNWskuB1IB2NKf0FHfr7h4ZX+uJRA==",
+  "success": true,
+  "projectFilePath": "C:\\Games\\App\\steamapps\\common\\RimWorld\\Mods\\GiddyUpCaravan\\v1.4\\Source\\Giddy-up-Caravan\\GiddyUpCaravan.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\YCHEN\\.nuget\\packages\\krafs.rimworld.ref\\1.4.3531\\krafs.rimworld.ref.1.4.3531.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\lib.harmony\\2.2.2\\lib.harmony.2.2.2.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\microsoft.build.framework\\15.1.548\\microsoft.build.framework.15.1.548.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\microsoft.build.utilities.core\\15.1.548\\microsoft.build.utilities.core.15.1.548.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\system.collections\\4.0.11\\system.collections.4.0.11.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\system.diagnostics.debug\\4.0.11\\system.diagnostics.debug.4.0.11.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\system.globalization\\4.0.11\\system.globalization.4.0.11.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\system.runtime\\4.1.0\\system.runtime.4.1.0.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\system.runtime.interopservices\\4.1.0\\system.runtime.interopservices.4.1.0.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\system.threading\\4.0.11\\system.threading.4.0.11.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\system.threading.thread\\4.0.0\\system.threading.thread.4.0.0.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\taskpubliciser\\1.0.3\\taskpubliciser.1.0.3.nupkg.sha512",
+    "C:\\Users\\YCHEN\\.nuget\\packages\\unlimitedhugs.rimworld.hugslib\\10.0.1\\unlimitedhugs.rimworld.hugslib.10.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

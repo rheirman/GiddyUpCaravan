@@ -1,23 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+
+  <GU_Car_Explanation_Speed>速度 (Giddy-up!商隊)</GU_Car_Explanation_Speed>
+  <GU_Car_Explanation_EveryoneRiding>全數上坐騎！</GU_Car_Explanation_EveryoneRiding>
+  <GU_Car_Explanation_Bonus>加成</GU_Car_Explanation_Bonus>
+  <GU_Car_Explanation_NotEveryoneRiding>有幾位沒有坐騎</GU_Car_Explanation_NotEveryoneRiding>
+  <GU_Car_Explanation_MaxNotEveryone>未能全數騎行時，最大速度被限制</GU_Car_Explanation_MaxNotEveryone>
+  <GU_Car_Explanation_OfTotal>殖民者總數</GU_Car_Explanation_OfTotal>  <!--No capital here -->
+  <GU_Car_Explanation_FractionMax>最大加成</GU_Car_Explanation_FractionMax>
+  <GU_Car_Explanation_FinalSpeed>最終速度</GU_Car_Explanation_FinalSpeed>
 
   <GU_Car_NotReachable_DropAnimal_NPC_Message>人員無法到達坐騎釋放區，請確保所有的坐騎釋放區都可到達</GU_Car_NotReachable_DropAnimal_NPC_Message>
 
-  <GU_Car_CompleteCaravanBonus_Title>所有殖民者騎乘獎勵</GU_Car_CompleteCaravanBonus_Title>
-  <GU_Car_CompleteCaravanBonus_Description>當所有殖民者都騎乘的時候，遠征隊的速度也會增加</GU_Car_CompleteCaravanBonus_Description>
-  <GU_Car_incompleteCaravanBonusCap_Title>部分殖民者騎乘時最大獎勵</GU_Car_incompleteCaravanBonusCap_Title>
+  <GU_Car_CompleteCaravanBonus_Title>所有殖民者騎乘加成</GU_Car_CompleteCaravanBonus_Title>
+  <GU_Car_CompleteCaravanBonus_Description>當所有殖民者都騎乘的時候，行隊速度也會增加</GU_Car_CompleteCaravanBonus_Description>
+  <GU_Car_incompleteCaravanBonusCap_Title>部分殖民者騎乘時最大加成</GU_Car_incompleteCaravanBonusCap_Title>
   <GU_Car_incompleteCaravanBonusCap_Description>每當一個殖民者騎乘時，提升這個比例的速度，當所有殖民者都騎乘的時候，這個獎勵不適用</GU_Car_incompleteCaravanBonusCap_Description>
 
   <GU_Car_visitorMountChance_Title>訪客騎乘機率</GU_Car_visitorMountChance_Title>
   <GU_Car_visitorMountChance_Description>訪客騎乘動物的機率。</GU_Car_visitorMountChance_Description>
   <GU_Car_visitorMountChanceTribal_Title>友好的部落人騎乘機率</GU_Car_visitorMountChanceTribal_Title>
   <GU_Car_visitorMountChanceTribal_Description>友好的部落人騎乘動物的機率</GU_Car_visitorMountChanceTribal_Description>
-  <GU_Car_InBiomeWeight_Title>訪客的坐騎是該生態動物的機率</GU_Car_InBiomeWeight_Title>
+  <GU_Car_InBiomeWeight_Title>訪客坐騎是該生態動物的機率</GU_Car_InBiomeWeight_Title>
   <GU_Car_InBiomeWeight_Description>訪客動物從全部可乘騎動物中隨機篩選的機率</GU_Car_InBiomeWeight_Description>
   <GU_Car_OutBiomeWeight_Title>訪客騎乘隨機動物的機率</GU_Car_OutBiomeWeight_Title>
   <GU_Car_OutBiomeWeight_Description>訪客動物從全部可乘騎動物中隨機篩選的機率</GU_Car_OutBiomeWeight_Description>
-  <GU_Car_NonWildWeight_Title>訪客的坐騎為非野生動物的機率</GU_Car_NonWildWeight_Title>
-  <GU_Car_NonWildWeight_Description>訪客的坐騎為非野生動物的機率</GU_Car_NonWildWeight_Description>
+  <GU_Car_NonWildWeight_Title>訪客坐騎為非野生動物的機率</GU_Car_NonWildWeight_Title>
+  <GU_Car_NonWildWeight_Description>訪客坐騎為非野生動物的機率</GU_Car_NonWildWeight_Description>
 
   <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Label>刪除放牧點</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Label>
   <GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>刪除指定的除放牧點</GU_Car_Designator_GU_DropAnimal_NPC_Clear_Description>
@@ -31,6 +40,5 @@
   <GU_Car_NeedsObedience>需要訓練服從</GU_Car_NeedsObedience>
   <GU_Car_AnimalNotSelected>未選擇</GU_Car_AnimalNotSelected>
   <GU_Car_PawnNotSelected>未選擇殖民者</GU_Car_PawnNotSelected>
-
 
 </LanguageData>
